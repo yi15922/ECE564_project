@@ -91,7 +91,7 @@ reg save_dimensions,
 assign dut__tb__sram_result_write_enable = sram_result_write_enable; 
 
 // --------------------- Accum registers ------------------------
-wire [`SRAM_DATA_RANGE] mac_result_z;
+reg [`SRAM_DATA_RANGE] mac_result_z;
 reg [`SRAM_DATA_RANGE] accum_result;
 always @(posedge clk) begin 
   if (zero_accum_result) accum_result <= 0;
@@ -312,39 +312,9 @@ always @(posedge clk) begin
 end
 
 
-DW_fp_mac_inst 
-  FP_MAC ( 
-  .inst_a(sram_input_read_data),
-  .inst_b(sram_weight_read_data),
-  .inst_c(accum_result),
-  .inst_rnd(3'b0),
-  .z_inst(mac_result_z),
-  .status_inst()
-);
+// -------------------------- Multiply accumulate --------------------------
+always @(*) begin
+  mac_result_z = sram_input_read_data * sram_weight_read_data + accum_result; 
+end
 
 endmodule
-
-module DW_fp_mac_inst #(
-  parameter inst_sig_width = 23,
-  parameter inst_exp_width = 8,
-  parameter inst_ieee_compliance = 0 // These need to be fixed to decrease error
-) ( 
-  input wire [inst_sig_width+inst_exp_width : 0] inst_a,
-  input wire [inst_sig_width+inst_exp_width : 0] inst_b,
-  input wire [inst_sig_width+inst_exp_width : 0] inst_c,
-  input wire [2 : 0] inst_rnd,
-  output wire [inst_sig_width+inst_exp_width : 0] z_inst,
-  output wire [7 : 0] status_inst
-);
-
-  // Instance of DW_fp_mac
-  DW_fp_mac #(inst_sig_width, inst_exp_width, inst_ieee_compliance) U1 (
-    .a(inst_a),
-    .b(inst_b),
-    .c(inst_c),
-    .rnd(inst_rnd),
-    .z(z_inst),
-    .status(status_inst) 
-  );
-
-endmodule: DW_fp_mac_inst

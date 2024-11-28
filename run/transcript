@@ -1,3 +1,6 @@
+# vsim -c -voptargs="+acc" tb_top "+TIMEOUT=1000000" "+num_of_testcases=4" "+test_mode=1" "+epsilon_mult=1.0" "+input_dir=../inputs" "+info_level=0" -do "run -all" 
+# Start time: 21:10:05 on Nov 27,2024
+# ** Note: (vsim-8009) Loading existing optimized design _opt
 # //  Questa Sim
 # //  Version 2024.2 linux May 20 2024
 # //
@@ -12,12 +15,6 @@
 # // of the Customer's facilities without the express written permission of SISW,
 # // and may not be used in any way not expressly authorized by SISW.
 # //
-# vsim -voptargs="+acc" tb_top "+TIMEOUT=1000000" "+num_of_testcases=4" "+epsilon_mult=1.0" "+input_dir=../inputs" -do "log -r *; set NoQuitOnFinish 1; do wave.do; run -all" 
-# Start time: 20:46:34 on Nov 27,2024
-# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
-# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
-# ** Note: (vopt-143) Recognized 1 FSM in module "MyDesign(fast)".
-# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
 # Loading sv_std.std
 # Loading work.tb_top(fast)
 # Loading work.sram(fast)
@@ -25,14 +22,7 @@
 # Loading work.sram(fast__2)
 # Loading work.MyDesign(fast)
 # Loading work.MyMAC(fast)
-# Loading work.DW_fp_mac_inst(fast)
-# Loading work.DW_fp_mac(fast)
-# Loading work.DW_fp_dp2(fast)
-# log -r *
-#  set NoQuitOnFinish 1
-# 1
-#  do wave.do
-#  run -all
+# run -all
 # INFO: number of testcases:           4
 # INFO: DONE WITH RESETING DUT
 # INFO:LVL0: ######## Running Test: 1 ########
@@ -41,14 +31,14 @@
 # INFO: reading ../inputs/proj_int_test_self_attn_1_result.dat
 # INFO: Dimension of result matrix [          2,           4]
 # ---------------- Checking the Query matrix result------------------  
-# [          0]: Difference =          45, expected_result =          45, dut_result =           0
-# [          1]: Difference =          78, expected_result =          78, dut_result =           0
-# [          2]: Difference =          40, expected_result =          40, dut_result =           0
-# [          3]: Difference =          58, expected_result =          58, dut_result =           0
-# [          4]: Difference =          52, expected_result =          52, dut_result =           0
-# [          5]: Difference =          35, expected_result =          35, dut_result =           0
-# [          6]: Difference =          22, expected_result =          22, dut_result =           0
-# [          7]: Difference =          62, expected_result =          62, dut_result =           0
+# [          0] Result MATCH: expected_result =          45, dut_result =          45
+# [          1] Result MATCH: expected_result =          78, dut_result =          78
+# [          2] Result MATCH: expected_result =          40, dut_result =          40
+# [          3] Result MATCH: expected_result =          58, dut_result =          58
+# [          4] Result MATCH: expected_result =          52, dut_result =          52
+# [          5] Result MATCH: expected_result =          35, dut_result =          35
+# [          6] Result MATCH: expected_result =          22, dut_result =          22
+# [          7] Result MATCH: expected_result =          62, dut_result =          62
 # ---------------- Checking the Key matrix result------------------  
 # [          8]: ERROR: SRAM result entry is missing
 # [          9]: ERROR: SRAM result entry is missing
@@ -87,10 +77,10 @@
 # INFO: reading ../inputs/proj_int_test_self_attn_2_result.dat
 # INFO: Dimension of result matrix [          2,           2]
 # ---------------- Checking the Query matrix result------------------  
-# [          0]: Difference =          46, expected_result =          46, dut_result =           0
-# [          1]: Difference =          32, expected_result =          32, dut_result =           0
-# [          2]: Difference =          26, expected_result =          26, dut_result =           0
-# [          3]: Difference =          39, expected_result =          39, dut_result =           0
+# [          0] Result MATCH: expected_result =          46, dut_result =          46
+# [          1] Result MATCH: expected_result =          32, dut_result =          32
+# [          2] Result MATCH: expected_result =          26, dut_result =          26
+# [          3] Result MATCH: expected_result =          39, dut_result =          39
 # ---------------- Checking the Key matrix result------------------  
 # [          4]: ERROR: SRAM result entry is missing
 # [          5]: ERROR: SRAM result entry is missing
@@ -117,22 +107,22 @@
 # INFO: reading ../inputs/proj_int_test_self_attn_3_result.dat
 # INFO: Dimension of result matrix [          8,           2]
 # ---------------- Checking the Query matrix result------------------  
-# [          0]: Difference =          57, expected_result =          57, dut_result =           0
-# [          1]: Difference =          84, expected_result =          84, dut_result =           0
-# [          2]: Difference =          51, expected_result =          51, dut_result =           0
-# [          3]: Difference =          90, expected_result =          90, dut_result =           0
-# [          4]: Difference =          24, expected_result =          24, dut_result =           0
-# [          5]: Difference =          33, expected_result =          33, dut_result =           0
-# [          6]: Difference =          46, expected_result =          46, dut_result =           0
-# [          7]: Difference =          45, expected_result =          45, dut_result =           0
-# [          8]: Difference =          49, expected_result =          49, dut_result =           0
-# [          9]: Difference =         111, expected_result =         111, dut_result =           0
-# [         10]: Difference =          68, expected_result =          68, dut_result =           0
-# [         11]: Difference =         120, expected_result =         120, dut_result =           0
-# [         12]: Difference =         101, expected_result =         101, dut_result =           0
-# [         13]: Difference =          96, expected_result =          96, dut_result =           0
-# [         14]: Difference =          63, expected_result =          63, dut_result =           0
-# [         15]: Difference =         108, expected_result =         108, dut_result =           0
+# [          0] Result MATCH: expected_result =          57, dut_result =          57
+# [          1] Result MATCH: expected_result =          84, dut_result =          84
+# [          2] Result MATCH: expected_result =          51, dut_result =          51
+# [          3] Result MATCH: expected_result =          90, dut_result =          90
+# [          4] Result MATCH: expected_result =          24, dut_result =          24
+# [          5] Result MATCH: expected_result =          33, dut_result =          33
+# [          6] Result MATCH: expected_result =          46, dut_result =          46
+# [          7] Result MATCH: expected_result =          45, dut_result =          45
+# [          8] Result MATCH: expected_result =          49, dut_result =          49
+# [          9] Result MATCH: expected_result =         111, dut_result =         111
+# [         10] Result MATCH: expected_result =          68, dut_result =          68
+# [         11] Result MATCH: expected_result =         120, dut_result =         120
+# [         12] Result MATCH: expected_result =         101, dut_result =         101
+# [         13] Result MATCH: expected_result =          96, dut_result =          96
+# [         14] Result MATCH: expected_result =          63, dut_result =          63
+# [         15] Result MATCH: expected_result =         108, dut_result =         108
 # ---------------- Checking the Key matrix result------------------  
 # [         16]: ERROR: SRAM result entry is missing
 # [         17]: ERROR: SRAM result entry is missing
@@ -255,14 +245,14 @@
 # INFO: reading ../inputs/proj_int_test_self_attn_4_result.dat
 # INFO: Dimension of result matrix [          1,           8]
 # ---------------- Checking the Query matrix result------------------  
-# [          0]: Difference =          72, expected_result =          72, dut_result =           0
-# [          1]: Difference =          94, expected_result =          94, dut_result =           0
-# [          2]: Difference =          34, expected_result =          34, dut_result =           0
-# [          3]: Difference =          65, expected_result =          65, dut_result =           0
-# [          4]: Difference =          89, expected_result =          89, dut_result =           0
-# [          5]: Difference =          40, expected_result =          40, dut_result =           0
-# [          6]: Difference =          75, expected_result =          75, dut_result =           0
-# [          7]: Difference =          67, expected_result =          67, dut_result =           0
+# [          0] Result MATCH: expected_result =          72, dut_result =          72
+# [          1] Result MATCH: expected_result =          94, dut_result =          94
+# [          2] Result MATCH: expected_result =          34, dut_result =          34
+# [          3] Result MATCH: expected_result =          65, dut_result =          65
+# [          4] Result MATCH: expected_result =          89, dut_result =          89
+# [          5] Result MATCH: expected_result =          40, dut_result =          40
+# [          6] Result MATCH: expected_result =          75, dut_result =          75
+# [          7] Result MATCH: expected_result =          67, dut_result =          67
 # ---------------- Checking the Key matrix result------------------  
 # [          8]: ERROR: SRAM result entry is missing
 # [          9]: ERROR: SRAM result entry is missing
@@ -294,12 +284,12 @@
 # [         32]: ERROR: SRAM result entry is missing
 # ------------------------------------------------------------------------ 
 # INFO: Total number of cases       : 4
-# INFO: Total number of result pass : 0 / 217
-# INFO: Final pass percentage       :   0.00
+# INFO: Total number of result pass : 36 / 217
+# INFO: Final pass percentage       :  16.00
 # INFO: Final Time Result           : 4600 ns
 # INFO: Final Cycle Result          : 920 cycles
 # 
 # ** Note: $finish    : ../testbench/testbench.sv(451)
 #    Time: 5340 ns  Iteration: 1  Instance: /tb_top
-# 1
-# Break in Module tb_top at ../testbench/testbench.sv line 451
+# End time: 21:10:06 on Nov 27,2024, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
