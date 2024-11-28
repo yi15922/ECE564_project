@@ -21,7 +21,7 @@
 # INFO: reading ../inputs/proj_int_test_self_attn_4_result.dat
 # INFO: Dimension of result matrix [          1,           8]
 # INFO: Total number of cases       : 4
-# INFO: Total number of result pass : 36 / 217
-# INFO: Final pass percentage       :  16.00
-# INFO: Final Time Result           : 4600 ns
-# INFO: Final Cycle Result          : 920 cycles
+# INFO: Total number of result pass : 72 / 217
+# INFO: Final pass percentage       :  33.00
+# INFO: Final Time Result           : 7680 ns
+# INFO: Final Cycle Result          : 1536 cycles

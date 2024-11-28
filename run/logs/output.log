@@ -3,8 +3,11 @@ Reading pref.tcl
 # 2024.2
 
 # vsim -c -voptargs="+acc" tb_top "+TIMEOUT=1000000" "+num_of_testcases=4" "+test_mode=1" "+epsilon_mult=1.0" "+input_dir=../inputs" "+info_level=0" -do "run -all" 
-# Start time: 21:10:05 on Nov 27,2024
-# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Start time: 15:53:58 on Nov 28,2024
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
+# ** Note: (vopt-143) Recognized 1 FSM in module "MyMAC(fast)".
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
 # //  Questa Sim
 # //  Version 2024.2 linux May 20 2024
 # //
@@ -44,14 +47,14 @@ Reading pref.tcl
 # [          6] Result MATCH: expected_result =          22, dut_result =          22
 # [          7] Result MATCH: expected_result =          62, dut_result =          62
 # ---------------- Checking the Key matrix result------------------  
-# [          8]: ERROR: SRAM result entry is missing
-# [          9]: ERROR: SRAM result entry is missing
-# [         10]: ERROR: SRAM result entry is missing
-# [         11]: ERROR: SRAM result entry is missing
-# [         12]: ERROR: SRAM result entry is missing
-# [         13]: ERROR: SRAM result entry is missing
-# [         14]: ERROR: SRAM result entry is missing
-# [         15]: ERROR: SRAM result entry is missing
+# [          8] Result MATCH: expected_result =          99, dut_result =          99
+# [          9] Result MATCH: expected_result =          57, dut_result =          57
+# [         10] Result MATCH: expected_result =          46, dut_result =          46
+# [         11] Result MATCH: expected_result =          99, dut_result =          99
+# [         12] Result MATCH: expected_result =          89, dut_result =          89
+# [         13] Result MATCH: expected_result =          65, dut_result =          65
+# [         14] Result MATCH: expected_result =          51, dut_result =          51
+# [         15] Result MATCH: expected_result =          79, dut_result =          79
 # ---------------- Checking the Value matrix result------------------  
 # [         16]: ERROR: SRAM result entry is missing
 # [         17]: ERROR: SRAM result entry is missing
@@ -86,10 +89,10 @@ Reading pref.tcl
 # [          2] Result MATCH: expected_result =          26, dut_result =          26
 # [          3] Result MATCH: expected_result =          39, dut_result =          39
 # ---------------- Checking the Key matrix result------------------  
-# [          4]: ERROR: SRAM result entry is missing
-# [          5]: ERROR: SRAM result entry is missing
-# [          6]: ERROR: SRAM result entry is missing
-# [          7]: ERROR: SRAM result entry is missing
+# [          4] Result MATCH: expected_result =          59, dut_result =          59
+# [          5] Result MATCH: expected_result =          99, dut_result =          99
+# [          6] Result MATCH: expected_result =          49, dut_result =          49
+# [          7] Result MATCH: expected_result =          74, dut_result =          74
 # ---------------- Checking the Value matrix result------------------  
 # [          8]: ERROR: SRAM result entry is missing
 # [          9]: ERROR: SRAM result entry is missing
@@ -128,22 +131,22 @@ Reading pref.tcl
 # [         14] Result MATCH: expected_result =          63, dut_result =          63
 # [         15] Result MATCH: expected_result =         108, dut_result =         108
 # ---------------- Checking the Key matrix result------------------  
-# [         16]: ERROR: SRAM result entry is missing
-# [         17]: ERROR: SRAM result entry is missing
-# [         18]: ERROR: SRAM result entry is missing
-# [         19]: ERROR: SRAM result entry is missing
-# [         20]: ERROR: SRAM result entry is missing
-# [         21]: ERROR: SRAM result entry is missing
-# [         22]: ERROR: SRAM result entry is missing
-# [         23]: ERROR: SRAM result entry is missing
-# [         24]: ERROR: SRAM result entry is missing
-# [         25]: ERROR: SRAM result entry is missing
-# [         26]: ERROR: SRAM result entry is missing
-# [         27]: ERROR: SRAM result entry is missing
-# [         28]: ERROR: SRAM result entry is missing
-# [         29]: ERROR: SRAM result entry is missing
-# [         30]: ERROR: SRAM result entry is missing
-# [         31]: ERROR: SRAM result entry is missing
+# [         16] Result MATCH: expected_result =          87, dut_result =          87
+# [         17] Result MATCH: expected_result =          66, dut_result =          66
+# [         18] Result MATCH: expected_result =          78, dut_result =          78
+# [         19] Result MATCH: expected_result =          62, dut_result =          62
+# [         20] Result MATCH: expected_result =          30, dut_result =          30
+# [         21] Result MATCH: expected_result =          43, dut_result =          43
+# [         22] Result MATCH: expected_result =          52, dut_result =          52
+# [         23] Result MATCH: expected_result =          59, dut_result =          59
+# [         24] Result MATCH: expected_result =          85, dut_result =          85
+# [         25] Result MATCH: expected_result =          83, dut_result =          83
+# [         26] Result MATCH: expected_result =         101, dut_result =         101
+# [         27] Result MATCH: expected_result =         102, dut_result =         102
+# [         28] Result MATCH: expected_result =         128, dut_result =         128
+# [         29] Result MATCH: expected_result =          92, dut_result =          92
+# [         30] Result MATCH: expected_result =          90, dut_result =          90
+# [         31] Result MATCH: expected_result =         100, dut_result =         100
 # ---------------- Checking the Value matrix result------------------  
 # [         32]: ERROR: SRAM result entry is missing
 # [         33]: ERROR: SRAM result entry is missing
@@ -258,14 +261,14 @@ Reading pref.tcl
 # [          6] Result MATCH: expected_result =          75, dut_result =          75
 # [          7] Result MATCH: expected_result =          67, dut_result =          67
 # ---------------- Checking the Key matrix result------------------  
-# [          8]: ERROR: SRAM result entry is missing
-# [          9]: ERROR: SRAM result entry is missing
-# [         10]: ERROR: SRAM result entry is missing
-# [         11]: ERROR: SRAM result entry is missing
-# [         12]: ERROR: SRAM result entry is missing
-# [         13]: ERROR: SRAM result entry is missing
-# [         14]: ERROR: SRAM result entry is missing
-# [         15]: ERROR: SRAM result entry is missing
+# [          8] Result MATCH: expected_result =          51, dut_result =          51
+# [          9] Result MATCH: expected_result =          76, dut_result =          76
+# [         10] Result MATCH: expected_result =          70, dut_result =          70
+# [         11] Result MATCH: expected_result =          63, dut_result =          63
+# [         12] Result MATCH: expected_result =          73, dut_result =          73
+# [         13] Result MATCH: expected_result =         114, dut_result =         114
+# [         14] Result MATCH: expected_result =          54, dut_result =          54
+# [         15] Result MATCH: expected_result =          74, dut_result =          74
 # ---------------- Checking the Value matrix result------------------  
 # [         16]: ERROR: SRAM result entry is missing
 # [         17]: ERROR: SRAM result entry is missing
@@ -288,12 +291,12 @@ Reading pref.tcl
 # [         32]: ERROR: SRAM result entry is missing
 # ------------------------------------------------------------------------ 
 # INFO: Total number of cases       : 4
-# INFO: Total number of result pass : 36 / 217
-# INFO: Final pass percentage       :  16.00
-# INFO: Final Time Result           : 4600 ns
-# INFO: Final Cycle Result          : 920 cycles
+# INFO: Total number of result pass : 72 / 217
+# INFO: Final pass percentage       :  33.00
+# INFO: Final Time Result           : 7680 ns
+# INFO: Final Cycle Result          : 1536 cycles
 # 
 # ** Note: $finish    : ../testbench/testbench.sv(451)
-#    Time: 5340 ns  Iteration: 1  Instance: /tb_top
-# End time: 21:10:06 on Nov 27,2024, Elapsed time: 0:00:01
-# Errors: 0, Warnings: 0
+#    Time: 8420 ns  Iteration: 1  Instance: /tb_top
+# End time: 15:54:01 on Nov 28,2024, Elapsed time: 0:00:03
+# Errors: 0, Warnings: 1

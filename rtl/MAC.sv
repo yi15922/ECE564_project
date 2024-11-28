@@ -18,7 +18,7 @@ module MyMAC(
 //---------------------------------------------------------------------------
 //Address selection signals
   input wire [`SRAM_ADDR_RANGE] sram_weight_read_base_address, 
-  input wire [`SRAM_ADDR_RANGE] sram_weight_write_start_address,
+  input wire [`SRAM_ADDR_RANGE] sram_result_write_start_address,
 
 //---------------------------------------------------------------------------
 //input SRAM interface
@@ -84,7 +84,7 @@ reg save_dimensions,
   weight_wraparound, 
   freeze_address_regs,
   sram_result_write_enable, 
-  calc_write_address, 
+  increment_write_address, 
   capture_data_result, 
   calculation_done; 
 
@@ -110,7 +110,8 @@ parameter [3:0] // synopsys enum states
   ACCUM_LOOP = 4'd6, 
   WAIT_FOR_RESULT1 = 4'd7,
   WAIT_FOR_RESULT2 = 4'd8, 
-  WRITE_RESULT = 4'd9;
+  WRITE_RESULT = 4'd9, 
+  HOLD_ADDRESS = 4'd10; // Holds the current addresses for 1 more cycle to allow dut to save it
 
 reg [3:0] /* synopsys enum states */ current_state, next_state;
 // synopsys state_vector current_state
@@ -133,7 +134,7 @@ always @(*) begin
   zero_accum_result = 0; 
   sram_result_write_enable = 0; 
   freeze_address_regs = 0; 
-  calc_write_address = 0; 
+  increment_write_address = 0; 
   capture_data_result = 0; 
   if (calculation_done) calculation_done = 1; 
   else calculation_done = 0;
@@ -176,9 +177,10 @@ always @(*) begin
 
     // Stay in this state until a result is ready to populate
     ACCUM_LOOP: begin
-      if (loop_count == input_num_cols) begin
+      if (loop_count == input_num_cols) begin // Reached the end of an input row
         if (sram_input_read_address == input_num_cols * input_num_rows && 
-            sram_weight_read_address == weight_num_cols * weight_num_rows) begin
+            // Subtract base address to correctly detect reaching end of matrix
+            sram_weight_read_address - (sram_weight_read_base_address - 1) == weight_num_cols * weight_num_rows) begin
               calculation_done = 1; 
             end
         next_state = WAIT_FOR_RESULT1;
@@ -198,7 +200,7 @@ always @(*) begin
     // Also calculates the write address
     WAIT_FOR_RESULT2: begin
       freeze_address_regs = 1;
-      calc_write_address = 1; 
+      increment_write_address = 1; 
       capture_data_result = 1; 
       next_state = WRITE_RESULT; 
     end
@@ -209,9 +211,14 @@ always @(*) begin
       sram_result_write_enable = 1;
       if (calculation_done) begin 
         MAC_ready_reg = 1; 
-        next_state = RESET; 
+        next_state = HOLD_ADDRESS; 
       end
       else next_state = BEGIN_ACCUM; 
+    end
+
+    HOLD_ADDRESS: begin
+      freeze_address_regs = 1; 
+      next_state = RESET; 
     end
 
     default: next_state = RESET; 
@@ -229,7 +236,8 @@ always @(posedge clk) begin
   // Since this signal appears in RESET state, use it as an address reset
   if (read_matrix_dimensions) begin
     sram_weight_read_address <= 0; 
-    weight_read_start_address <= 1; 
+    // weight_read_start_address <= 1; 
+    weight_read_start_address <= sram_weight_read_base_address; // Wrap back to dynamic base address instead
   end
   else if (start_accum) begin
     sram_weight_read_address <= weight_read_start_address;
@@ -237,9 +245,10 @@ always @(posedge clk) begin
   else if (!freeze_address_regs) begin
     // Synchronize the address wrap-around back to 1 with the input reads
     if (input_wraparound) begin
-      if (sram_weight_read_address == weight_num_cols * weight_num_rows) begin
+      if (sram_weight_read_address - (sram_weight_read_base_address - 1) == weight_num_cols * weight_num_rows) begin
         weight_wraparound <= 1;
-        weight_read_start_address <= 1; 
+        // weight_read_start_address <= 1;
+        weight_read_start_address <= sram_weight_read_base_address; // Wrap back to dynamic base address instead
       end 
       // If not at the end of matrix yet, simply increment
       else begin 
@@ -295,10 +304,11 @@ end
 // ---------------------- Write address calculation ----------------------
 always @(posedge clk) begin
   if (read_matrix_dimensions) begin
-    sram_result_write_address <= -1; 
+    // sram_result_write_address <= -1; 
+    sram_result_write_address <= sram_result_write_start_address - 1; // Use dynamic write start address instead
   end
 
-  if (calc_write_address) begin
+  if (increment_write_address) begin
     sram_result_write_address <= sram_result_write_address + 1; 
   end
 end
