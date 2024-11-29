@@ -93,6 +93,20 @@ R0
 R1
 R0
 R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
 !s11f vlog 2024.2 2024.05, May 20 2024
 13
 !s112 1.1
@@ -102,10 +116,10 @@ R1
 cModel Technology
 Z2 d/mnt/ncsudrive/y/ychen282/ECE564/project/run
 T_opt
-!s110 1732865892
-VlJG6cfghoC7jMIG[HcPQR0
+!s110 1732898632
+Vnjo7RE0kIkN9:`;R`=]kL2
 04 6 4 work tb_top fast 0
-=1-000ae431a4f1-67496f63-14c0b-1cb2cb
+=1-000ae431a4f1-6749ef47-92cac-1b6715
 R1
 !s12f OEM100
 !s12b OEM100
@@ -963,7 +977,7 @@ n@d@w_fp_sum4
 vMyDesign
 R16
 R17
-Z23 !s110 1732868677
+Z23 !s110 1732898659
 !i10b 1
 !s100 FZ`dkfWUo``Kzd[;ooNgI0
 IRV^MTnE2g`064kLIfJ1Y[3
@@ -972,14 +986,14 @@ R2
 w1732865879
 8../rtl/dut.sv
 F../rtl/dut.sv
-!i122 109
+!i122 122
 L0 6 324
 R7
 R8
 r1
 !s85 0
 31
-Z24 !s108 1732868676.000000
+Z24 !s108 1732898658.000000
 Z25 !s107 ../rtl/common/common.vh|../rtl/MAC.sv|../rtl/dut.sv|../testbench/sram.sv|../testbench/testbench.sv|
 R20
 !i113 0
@@ -992,15 +1006,15 @@ R16
 R17
 R23
 !i10b 1
-!s100 7KZG67Wa=T_THJF;dlWQO3
-IE9mYM[XGlHK4H4MkNz5990
+!s100 oB4:YXON:]cVHVdZ]WIY42
+Ij:I42>2:]G:z6]B52Om3U3
 S1
 R2
-w1732863106
+w1732898610
 R18
 R19
-!i122 109
-L0 6 363
+!i122 122
+L0 6 365
 R7
 R8
 r1
@@ -1026,7 +1040,7 @@ R2
 w1731685853
 8../testbench/sram.sv
 F../testbench/sram.sv
-!i122 109
+!i122 122
 L0 5 105
 R7
 R8
@@ -1052,7 +1066,7 @@ R2
 w1732864106
 8../testbench/testbench.sv
 F../testbench/testbench.sv
-!i122 109
+!i122 122
 L0 21 433
 R7
 R8
