@@ -1,27 +1,12 @@
-# INFO: number of testcases:           4
+# INFO: number of testcases:           1
 # INFO: DONE WITH RESETING DUT
 # INFO:LVL0: ######## Running Test: 1 ########
 # INFO: Reading memory file: ../inputs/proj_int_test_self_attn_1_input.dat
 # INFO: Reading memory file: ../inputs/proj_int_test_self_attn_1_weight.dat
 # INFO: reading ../inputs/proj_int_test_self_attn_1_result.dat
 # INFO: Dimension of result matrix [          2,           4]
-# INFO:LVL0: ######## Running Test: 2 ########
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_2_input.dat
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_2_weight.dat
-# INFO: reading ../inputs/proj_int_test_self_attn_2_result.dat
-# INFO: Dimension of result matrix [          2,           2]
-# INFO:LVL0: ######## Running Test: 3 ########
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_3_input.dat
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_3_weight.dat
-# INFO: reading ../inputs/proj_int_test_self_attn_3_result.dat
-# INFO: Dimension of result matrix [          8,           2]
-# INFO:LVL0: ######## Running Test: 4 ########
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_4_input.dat
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_4_weight.dat
-# INFO: reading ../inputs/proj_int_test_self_attn_4_result.dat
-# INFO: Dimension of result matrix [          1,           8]
-# INFO: Total number of cases       : 4
-# INFO: Total number of result pass : 72 / 217
-# INFO: Final pass percentage       :  33.00
-# INFO: Final Time Result           : 7680 ns
-# INFO: Final Cycle Result          : 1536 cycles
+# INFO: Total number of cases       : 1
+# INFO: Total number of result pass : 24 / 36
+# INFO: Final pass percentage       :  66.00
+# INFO: Final Time Result           : 2440 ns
+# INFO: Final Cycle Result          : 488 cycles

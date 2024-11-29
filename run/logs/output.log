@@ -2,11 +2,11 @@ Reading pref.tcl
 
 # 2024.2
 
-# vsim -c -voptargs="+acc" tb_top "+TIMEOUT=1000000" "+num_of_testcases=4" "+test_mode=1" "+epsilon_mult=1.0" "+input_dir=../inputs" "+info_level=0" -do "run -all" 
-# Start time: 15:53:58 on Nov 28,2024
+# vsim -c -voptargs="+acc" tb_top "+TIMEOUT=1000000" "+num_of_testcases=1" "+test_mode=1" "+epsilon_mult=1.0" "+input_dir=../inputs" "+info_level=0" -do "run -all" 
+# Start time: 20:02:55 on Nov 28,2024
 # ** Note: (vsim-3813) Design is being optimized due to module recompilation...
 # ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
-# ** Note: (vopt-143) Recognized 1 FSM in module "MyMAC(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "MyDesign(fast)".
 # ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
 # //  Questa Sim
 # //  Version 2024.2 linux May 20 2024
@@ -30,7 +30,7 @@ Reading pref.tcl
 # Loading work.MyDesign(fast)
 # Loading work.MyMAC(fast)
 # run -all
-# INFO: number of testcases:           4
+# INFO: number of testcases:           1
 # INFO: DONE WITH RESETING DUT
 # INFO:LVL0: ######## Running Test: 1 ########
 # INFO: Reading memory file: ../inputs/proj_int_test_self_attn_1_input.dat
@@ -56,14 +56,14 @@ Reading pref.tcl
 # [         14] Result MATCH: expected_result =          51, dut_result =          51
 # [         15] Result MATCH: expected_result =          79, dut_result =          79
 # ---------------- Checking the Value matrix result------------------  
-# [         16]: ERROR: SRAM result entry is missing
-# [         17]: ERROR: SRAM result entry is missing
-# [         18]: ERROR: SRAM result entry is missing
-# [         19]: ERROR: SRAM result entry is missing
-# [         20]: ERROR: SRAM result entry is missing
-# [         21]: ERROR: SRAM result entry is missing
-# [         22]: ERROR: SRAM result entry is missing
-# [         23]: ERROR: SRAM result entry is missing
+# [         16] Result MATCH: expected_result =          81, dut_result =          81
+# [         17] Result MATCH: expected_result =          89, dut_result =          89
+# [         18] Result MATCH: expected_result =          83, dut_result =          83
+# [         19] Result MATCH: expected_result =          98, dut_result =          98
+# [         20] Result MATCH: expected_result =          89, dut_result =          89
+# [         21] Result MATCH: expected_result =          62, dut_result =          62
+# [         22] Result MATCH: expected_result =          49, dut_result =          49
+# [         23] Result MATCH: expected_result =          88, dut_result =          88
 # ---------------- Checking the Score matrix result------------------  
 # [         24]: ERROR: SRAM result entry is missing
 # [         25]: ERROR: SRAM result entry is missing
@@ -78,225 +78,14 @@ Reading pref.tcl
 # [         33]: ERROR: SRAM result entry is missing
 # [         34]: ERROR: SRAM result entry is missing
 # [         35]: ERROR: SRAM result entry is missing
-# INFO:LVL0: ######## Running Test: 2 ########
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_2_input.dat
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_2_weight.dat
-# INFO: reading ../inputs/proj_int_test_self_attn_2_result.dat
-# INFO: Dimension of result matrix [          2,           2]
-# ---------------- Checking the Query matrix result------------------  
-# [          0] Result MATCH: expected_result =          46, dut_result =          46
-# [          1] Result MATCH: expected_result =          32, dut_result =          32
-# [          2] Result MATCH: expected_result =          26, dut_result =          26
-# [          3] Result MATCH: expected_result =          39, dut_result =          39
-# ---------------- Checking the Key matrix result------------------  
-# [          4] Result MATCH: expected_result =          59, dut_result =          59
-# [          5] Result MATCH: expected_result =          99, dut_result =          99
-# [          6] Result MATCH: expected_result =          49, dut_result =          49
-# [          7] Result MATCH: expected_result =          74, dut_result =          74
-# ---------------- Checking the Value matrix result------------------  
-# [          8]: ERROR: SRAM result entry is missing
-# [          9]: ERROR: SRAM result entry is missing
-# [         10]: ERROR: SRAM result entry is missing
-# [         11]: ERROR: SRAM result entry is missing
-# ---------------- Checking the Score matrix result------------------  
-# [         12]: ERROR: SRAM result entry is missing
-# [         13]: ERROR: SRAM result entry is missing
-# [         14]: ERROR: SRAM result entry is missing
-# [         15]: ERROR: SRAM result entry is missing
-# ---------------- Checking the Attention matrix result------------------  
-# [         16]: ERROR: SRAM result entry is missing
-# [         17]: ERROR: SRAM result entry is missing
-# [         18]: ERROR: SRAM result entry is missing
-# [         19]: ERROR: SRAM result entry is missing
-# INFO:LVL0: ######## Running Test: 3 ########
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_3_input.dat
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_3_weight.dat
-# INFO: reading ../inputs/proj_int_test_self_attn_3_result.dat
-# INFO: Dimension of result matrix [          8,           2]
-# ---------------- Checking the Query matrix result------------------  
-# [          0] Result MATCH: expected_result =          57, dut_result =          57
-# [          1] Result MATCH: expected_result =          84, dut_result =          84
-# [          2] Result MATCH: expected_result =          51, dut_result =          51
-# [          3] Result MATCH: expected_result =          90, dut_result =          90
-# [          4] Result MATCH: expected_result =          24, dut_result =          24
-# [          5] Result MATCH: expected_result =          33, dut_result =          33
-# [          6] Result MATCH: expected_result =          46, dut_result =          46
-# [          7] Result MATCH: expected_result =          45, dut_result =          45
-# [          8] Result MATCH: expected_result =          49, dut_result =          49
-# [          9] Result MATCH: expected_result =         111, dut_result =         111
-# [         10] Result MATCH: expected_result =          68, dut_result =          68
-# [         11] Result MATCH: expected_result =         120, dut_result =         120
-# [         12] Result MATCH: expected_result =         101, dut_result =         101
-# [         13] Result MATCH: expected_result =          96, dut_result =          96
-# [         14] Result MATCH: expected_result =          63, dut_result =          63
-# [         15] Result MATCH: expected_result =         108, dut_result =         108
-# ---------------- Checking the Key matrix result------------------  
-# [         16] Result MATCH: expected_result =          87, dut_result =          87
-# [         17] Result MATCH: expected_result =          66, dut_result =          66
-# [         18] Result MATCH: expected_result =          78, dut_result =          78
-# [         19] Result MATCH: expected_result =          62, dut_result =          62
-# [         20] Result MATCH: expected_result =          30, dut_result =          30
-# [         21] Result MATCH: expected_result =          43, dut_result =          43
-# [         22] Result MATCH: expected_result =          52, dut_result =          52
-# [         23] Result MATCH: expected_result =          59, dut_result =          59
-# [         24] Result MATCH: expected_result =          85, dut_result =          85
-# [         25] Result MATCH: expected_result =          83, dut_result =          83
-# [         26] Result MATCH: expected_result =         101, dut_result =         101
-# [         27] Result MATCH: expected_result =         102, dut_result =         102
-# [         28] Result MATCH: expected_result =         128, dut_result =         128
-# [         29] Result MATCH: expected_result =          92, dut_result =          92
-# [         30] Result MATCH: expected_result =          90, dut_result =          90
-# [         31] Result MATCH: expected_result =         100, dut_result =         100
-# ---------------- Checking the Value matrix result------------------  
-# [         32]: ERROR: SRAM result entry is missing
-# [         33]: ERROR: SRAM result entry is missing
-# [         34]: ERROR: SRAM result entry is missing
-# [         35]: ERROR: SRAM result entry is missing
-# [         36]: ERROR: SRAM result entry is missing
-# [         37]: ERROR: SRAM result entry is missing
-# [         38]: ERROR: SRAM result entry is missing
-# [         39]: ERROR: SRAM result entry is missing
-# [         40]: ERROR: SRAM result entry is missing
-# [         41]: ERROR: SRAM result entry is missing
-# [         42]: ERROR: SRAM result entry is missing
-# [         43]: ERROR: SRAM result entry is missing
-# [         44]: ERROR: SRAM result entry is missing
-# [         45]: ERROR: SRAM result entry is missing
-# [         46]: ERROR: SRAM result entry is missing
-# [         47]: ERROR: SRAM result entry is missing
-# ---------------- Checking the Score matrix result------------------  
-# [         48]: ERROR: SRAM result entry is missing
-# [         49]: ERROR: SRAM result entry is missing
-# [         50]: ERROR: SRAM result entry is missing
-# [         51]: ERROR: SRAM result entry is missing
-# [         52]: ERROR: SRAM result entry is missing
-# [         53]: ERROR: SRAM result entry is missing
-# [         54]: ERROR: SRAM result entry is missing
-# [         55]: ERROR: SRAM result entry is missing
-# [         56]: ERROR: SRAM result entry is missing
-# [         57]: ERROR: SRAM result entry is missing
-# [         58]: ERROR: SRAM result entry is missing
-# [         59]: ERROR: SRAM result entry is missing
-# [         60]: ERROR: SRAM result entry is missing
-# [         61]: ERROR: SRAM result entry is missing
-# [         62]: ERROR: SRAM result entry is missing
-# [         63]: ERROR: SRAM result entry is missing
-# [         64]: ERROR: SRAM result entry is missing
-# [         65]: ERROR: SRAM result entry is missing
-# [         66]: ERROR: SRAM result entry is missing
-# [         67]: ERROR: SRAM result entry is missing
-# [         68]: ERROR: SRAM result entry is missing
-# [         69]: ERROR: SRAM result entry is missing
-# [         70]: ERROR: SRAM result entry is missing
-# [         71]: ERROR: SRAM result entry is missing
-# [         72]: ERROR: SRAM result entry is missing
-# [         73]: ERROR: SRAM result entry is missing
-# [         74]: ERROR: SRAM result entry is missing
-# [         75]: ERROR: SRAM result entry is missing
-# [         76]: ERROR: SRAM result entry is missing
-# [         77]: ERROR: SRAM result entry is missing
-# [         78]: ERROR: SRAM result entry is missing
-# [         79]: ERROR: SRAM result entry is missing
-# [         80]: ERROR: SRAM result entry is missing
-# [         81]: ERROR: SRAM result entry is missing
-# [         82]: ERROR: SRAM result entry is missing
-# [         83]: ERROR: SRAM result entry is missing
-# [         84]: ERROR: SRAM result entry is missing
-# [         85]: ERROR: SRAM result entry is missing
-# [         86]: ERROR: SRAM result entry is missing
-# [         87]: ERROR: SRAM result entry is missing
-# [         88]: ERROR: SRAM result entry is missing
-# [         89]: ERROR: SRAM result entry is missing
-# [         90]: ERROR: SRAM result entry is missing
-# [         91]: ERROR: SRAM result entry is missing
-# [         92]: ERROR: SRAM result entry is missing
-# [         93]: ERROR: SRAM result entry is missing
-# [         94]: ERROR: SRAM result entry is missing
-# [         95]: ERROR: SRAM result entry is missing
-# [         96]: ERROR: SRAM result entry is missing
-# [         97]: ERROR: SRAM result entry is missing
-# [         98]: ERROR: SRAM result entry is missing
-# [         99]: ERROR: SRAM result entry is missing
-# [        100]: ERROR: SRAM result entry is missing
-# [        101]: ERROR: SRAM result entry is missing
-# [        102]: ERROR: SRAM result entry is missing
-# [        103]: ERROR: SRAM result entry is missing
-# [        104]: ERROR: SRAM result entry is missing
-# [        105]: ERROR: SRAM result entry is missing
-# [        106]: ERROR: SRAM result entry is missing
-# [        107]: ERROR: SRAM result entry is missing
-# [        108]: ERROR: SRAM result entry is missing
-# [        109]: ERROR: SRAM result entry is missing
-# [        110]: ERROR: SRAM result entry is missing
-# [        111]: ERROR: SRAM result entry is missing
-# ---------------- Checking the Attention matrix result------------------  
-# [        112]: ERROR: SRAM result entry is missing
-# [        113]: ERROR: SRAM result entry is missing
-# [        114]: ERROR: SRAM result entry is missing
-# [        115]: ERROR: SRAM result entry is missing
-# [        116]: ERROR: SRAM result entry is missing
-# [        117]: ERROR: SRAM result entry is missing
-# [        118]: ERROR: SRAM result entry is missing
-# [        119]: ERROR: SRAM result entry is missing
-# [        120]: ERROR: SRAM result entry is missing
-# [        121]: ERROR: SRAM result entry is missing
-# [        122]: ERROR: SRAM result entry is missing
-# [        123]: ERROR: SRAM result entry is missing
-# [        124]: ERROR: SRAM result entry is missing
-# [        125]: ERROR: SRAM result entry is missing
-# [        126]: ERROR: SRAM result entry is missing
-# [        127]: ERROR: SRAM result entry is missing
-# INFO:LVL0: ######## Running Test: 4 ########
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_4_input.dat
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_4_weight.dat
-# INFO: reading ../inputs/proj_int_test_self_attn_4_result.dat
-# INFO: Dimension of result matrix [          1,           8]
-# ---------------- Checking the Query matrix result------------------  
-# [          0] Result MATCH: expected_result =          72, dut_result =          72
-# [          1] Result MATCH: expected_result =          94, dut_result =          94
-# [          2] Result MATCH: expected_result =          34, dut_result =          34
-# [          3] Result MATCH: expected_result =          65, dut_result =          65
-# [          4] Result MATCH: expected_result =          89, dut_result =          89
-# [          5] Result MATCH: expected_result =          40, dut_result =          40
-# [          6] Result MATCH: expected_result =          75, dut_result =          75
-# [          7] Result MATCH: expected_result =          67, dut_result =          67
-# ---------------- Checking the Key matrix result------------------  
-# [          8] Result MATCH: expected_result =          51, dut_result =          51
-# [          9] Result MATCH: expected_result =          76, dut_result =          76
-# [         10] Result MATCH: expected_result =          70, dut_result =          70
-# [         11] Result MATCH: expected_result =          63, dut_result =          63
-# [         12] Result MATCH: expected_result =          73, dut_result =          73
-# [         13] Result MATCH: expected_result =         114, dut_result =         114
-# [         14] Result MATCH: expected_result =          54, dut_result =          54
-# [         15] Result MATCH: expected_result =          74, dut_result =          74
-# ---------------- Checking the Value matrix result------------------  
-# [         16]: ERROR: SRAM result entry is missing
-# [         17]: ERROR: SRAM result entry is missing
-# [         18]: ERROR: SRAM result entry is missing
-# [         19]: ERROR: SRAM result entry is missing
-# [         20]: ERROR: SRAM result entry is missing
-# [         21]: ERROR: SRAM result entry is missing
-# [         22]: ERROR: SRAM result entry is missing
-# [         23]: ERROR: SRAM result entry is missing
-# ---------------- Checking the Score matrix result------------------  
-# [         24]: ERROR: SRAM result entry is missing
-# ---------------- Checking the Attention matrix result------------------  
-# [         25]: ERROR: SRAM result entry is missing
-# [         26]: ERROR: SRAM result entry is missing
-# [         27]: ERROR: SRAM result entry is missing
-# [         28]: ERROR: SRAM result entry is missing
-# [         29]: ERROR: SRAM result entry is missing
-# [         30]: ERROR: SRAM result entry is missing
-# [         31]: ERROR: SRAM result entry is missing
-# [         32]: ERROR: SRAM result entry is missing
 # ------------------------------------------------------------------------ 
-# INFO: Total number of cases       : 4
-# INFO: Total number of result pass : 72 / 217
-# INFO: Final pass percentage       :  33.00
-# INFO: Final Time Result           : 7680 ns
-# INFO: Final Cycle Result          : 1536 cycles
+# INFO: Total number of cases       : 1
+# INFO: Total number of result pass : 24 / 36
+# INFO: Final pass percentage       :  66.00
+# INFO: Final Time Result           : 2440 ns
+# INFO: Final Cycle Result          : 488 cycles
 # 
 # ** Note: $finish    : ../testbench/testbench.sv(451)
-#    Time: 8420 ns  Iteration: 1  Instance: /tb_top
-# End time: 15:54:01 on Nov 28,2024, Elapsed time: 0:00:03
+#    Time: 3180 ns  Iteration: 1  Instance: /tb_top
+# End time: 20:02:58 on Nov 28,2024, Elapsed time: 0:00:03
 # Errors: 0, Warnings: 1

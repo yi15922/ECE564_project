@@ -1,0 +1,54 @@
+Information: Updating design information... (UID-85)
+Information: Timing loop detected. (OPT-150)
+	U689/B1 U689/ZN U765/A U765/ZN 
+Warning: Disabling timing arc between pins 'B1' and 'ZN' on cell 'U689'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'B1' and 'ZN' on cell 'U689'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'B1' and 'ZN' on cell 'U689'
+         to break a timing loop. (OPT-314)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay min
+        -max_paths 1
+Design : MyDesign
+Version: T-2022.03-SP4
+Date   : Thu Nov 28 20:43:13 2024
+****************************************
+
+Operating Conditions: fast   Library: NangateOpenCellLibrary_PDKv1_2_v2008_10_fast_nldm
+Wire Load Model Mode: top
+
+  Startpoint: MAC/loop_count_reg[14]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: MAC/loop_count_reg[14]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: min
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk (rise edge)                  0.0000     0.0000
+  clock network delay (ideal)            0.0000     0.0000
+  MAC/loop_count_reg[14]/CK (DFF_X1)     0.0000     0.0000 r
+  MAC/loop_count_reg[14]/Q (DFF_X1)      0.0637     0.0637 r
+  U3039/ZN (OAI21_X1)                    0.0202     0.0839 f
+  MAC/loop_count_reg[14]/D (DFF_X1)      0.0000     0.0839 f
+  data arrival time                                 0.0839
+
+  clock clk (rise edge)                  0.0000     0.0000
+  clock network delay (ideal)            0.0000     0.0000
+  clock uncertainty                      0.0500     0.0500
+  MAC/loop_count_reg[14]/CK (DFF_X1)     0.0000     0.0500 r
+  library hold time                      0.0006     0.0506
+  data required time                                0.0506
+  -----------------------------------------------------------
+  data required time                                0.0506
+  data arrival time                                -0.0839
+  -----------------------------------------------------------
+  slack (MET)                                       0.0333
+
+
+1

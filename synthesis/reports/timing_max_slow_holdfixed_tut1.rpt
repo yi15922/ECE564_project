@@ -1,0 +1,72 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : MyDesign
+Version: T-2022.03-SP4
+Date   : Thu Nov 28 20:43:14 2024
+****************************************
+
+Operating Conditions: slow   Library: NangateOpenCellLibrary_PDKv1_2_v2008_10_slow_nldm
+Wire Load Model Mode: top
+
+  Startpoint: tb__dut__sram_weight_read_data[19]
+              (input port clocked by clk)
+  Endpoint: MAC/weight_max_addr_reg[15]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                 0.0000     0.0000
+  clock network delay (ideal)                           0.0000     0.0000
+  input external delay                                  0.6580     0.6580 r
+  tb__dut__sram_weight_read_data[19] (in)               0.1302     0.7882 r
+  U1408/ZN (INV_X1)                                     0.1637     0.9519 f
+  U3934/ZN (NOR2_X1)                                    0.3291     1.2809 r
+  intadd_7/U5/S (FA_X1)                                 0.7806     2.0615 f
+  intadd_11/U3/S (FA_X1)                                0.8582     2.9197 f
+  intadd_6/U3/S (FA_X1)                                 0.8720     3.7917 f
+  U777/ZN (OAI21_X1)                                    0.2790     4.0707 r
+  U776/ZN (OAI21_X1)                                    0.2000     4.2707 f
+  intadd_6/U2/CO (FA_X1)                                0.6114     4.8821 f
+  U1256/ZN (INV_X1)                                     0.1394     5.0215 r
+  U3499/ZN (NAND2_X1)                                   0.0679     5.0894 f
+  U3500/ZN (NAND2_X1)                                   0.0960     5.1854 r
+  U3501/ZN (OAI21_X1)                                   0.1684     5.3538 f
+  intadd_1/U2/CO (FA_X1)                                0.6372     5.9910 f
+  U767/ZN (OAI21_X2)                                    0.2175     6.2085 r
+  U766/ZN (OAI21_X2)                                    0.1569     6.3654 f
+  intadd_5/U2/CO (FA_X1)                                0.5969     6.9623 f
+  U1259/ZN (INV_X1)                                     0.1394     7.1018 r
+  U3508/ZN (NAND2_X1)                                   0.0679     7.1697 f
+  U3509/ZN (NAND2_X1)                                   0.0960     7.2657 r
+  U3510/ZN (OAI21_X1)                                   0.1684     7.4341 f
+  intadd_0/U2/CO (FA_X1)                                0.5947     8.0288 f
+  U3287/ZN (XNOR2_X1)                                   0.2519     8.2807 r
+  U3289/ZN (INV_X1)                                     0.0679     8.3486 f
+  U3290/ZN (NAND2_X1)                                   0.1450     8.4936 r
+  U3291/ZN (NAND2_X1)                                   0.0959     8.5895 f
+  U3301/ZN (XNOR2_X1)                                   0.2481     8.8376 f
+  U3372/ZN (XNOR2_X1)                                   0.2692     9.1068 f
+  U3373/Z (MUX2_X1)                                     0.4945     9.6012 f
+  MAC/weight_max_addr_reg[15]/D (DFF_X1)                0.0000     9.6012 f
+  data arrival time                                                9.6012
+
+  clock clk (rise edge)                                10.0000    10.0000
+  clock network delay (ideal)                           0.0000    10.0000
+  clock uncertainty                                    -0.0500     9.9500
+  MAC/weight_max_addr_reg[15]/CK (DFF_X1)               0.0000     9.9500 r
+  library setup time                                   -0.3365     9.6135
+  data required time                                               9.6135
+  --------------------------------------------------------------------------
+  data required time                                               9.6135
+  data arrival time                                               -9.6012
+  --------------------------------------------------------------------------
+  slack (MET)                                                      0.0123
+
+
+1

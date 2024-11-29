@@ -1,0 +1,711 @@
+#---------------------------------------------------------
+# Our first Optimization 'compile' is intended to      
+# produce a design that will meet hold-time            
+# under worst-case conditions:                         
+#    - slowest process corner                        
+#    - highest operating temperature and lowest Vcc  
+#    - expected worst case clock skew                
+#---------------------------------------------------------
+#---------------------------------------------------------
+# Set the current design to the top level instance name 
+# to make sure that you are working on the right design
+# at the time of constraint setting and compilation
+#---------------------------------------------------------
+##################################################
+# Revision History: 01/27/2010, by Chanyoun Won
+#                   01/19/2011, by Won Ha Choi
+#                   01/21/2011, by Zhuo Yan
+##################################################
+current_design $modname
+Current design is 'MyDesign'.
+#---------------------------------------------------------
+# Set the synthetic library variable to enable use of 
+# desigware blocks
+#---------------------------------------------------------
+set synthetic_library [list dw_foundation.sldb]
+#---------------------------------------------------------
+# Specify the worst case (slowest) libraries and       
+# slowest temperature/Vcc conditions                   
+# This would involve setting up the slow library as the 
+# target and setting the link library to the conctenation
+# of the target and the synthetic library
+#---------------------------------------------------------
+set target_library NangateOpenCellLibrary_PDKv1_2_v2008_10_slow_nldm.db
+set link_library   [concat  $target_library $synthetic_library]
+#---------------------------------------------------------
+# Specify a 5000ps clock period with 50% duty cycle     
+# and a skew of 50ps                                 
+#---------------------------------------------------------
+#set CLK_PER  5
+set CLK_SKEW 0.05
+create_clock -name $clkname -period $CLK_PER -waveform "0 [expr $CLK_PER / 2]" $clkname
+set_clock_uncertainty $CLK_SKEW $clkname
+#---------------------------------------------------------
+# Now set up the 'CONSTRAINTS' on the design:          
+# 1.  How much of the clock period is lost in the      
+#     modules connected to it                          
+# 2.  What type of cells are driving the inputs        
+# 3.  What type of cells and how many (fanout) must it 
+#     be able to drive                                 
+#---------------------------------------------------------
+# Following parameters have been modified based on Nangate 45nm library (slow conditional):
+# DFF_CKQ, IP_DELAY, DFF_SETUP, OP_DELAY, WIRE_LOAD_EST
+# These values are based on simulation. Credited to: Christopher Mineo
+#---------------------------------------------------------
+# ASSUME being driven by a slowest D-flip-flop         
+# The DFF cell has a clock-Q delay of 638 ps          
+# EX: 50um M3 has R of 178.57 Ohms and C of 12.5585fF. 0.69RC = 1.55ps, and wire load
+# of 50um M3 is 13fF. Therefore, roughly 20ps wire delay is assumed.                
+# NOTE: THESE ARE INITIAL ASSUMPTIONS ONLY             
+#---------------------------------------------------------
+#
+set DFF_CKQ 0.638
+set IP_DELAY [expr 0.02 + $DFF_CKQ]
+set_input_delay $IP_DELAY -clock $clkname [remove_from_collection [all_inputs] $clkname]
+#---------------------------------------------------------
+# ASSUME this module is driving a D-flip-flip          
+# The DFF cell has a set-up time of 546 ps             
+# Same wire delay as mentioned above           
+# NOTE: THESE ARE INITIAL ASSUMPTIONS ONLY             
+#---------------------------------------------------------
+set DFF_SETUP 0.546
+set OP_DELAY [expr 0.02 + $DFF_SETUP]
+set_output_delay $OP_DELAY -clock $clkname [all_outputs]
+#---------------------------------------------------------  
+# ASSUME being driven by a D-flip-flop                 
+#---------------------------------------------------------
+set DR_CELL_NAME DFFR_X1
+set DR_CELL_PIN  Q
+set_driving_cell -lib_cell "$DR_CELL_NAME" -pin "$DR_CELL_PIN" [remove_from_collection [all_inputs] $clkname]
+Warning: Design rule attributes from the driving cell will be set on the port 'reset_n'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'dut_valid'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[31]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[30]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[29]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[28]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[27]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[26]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[25]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[24]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[23]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[22]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[21]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[20]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[19]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[18]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[17]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[16]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[15]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[14]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[13]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[12]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[11]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[10]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[9]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[8]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[7]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[6]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[5]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[4]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[3]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[2]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[1]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_input_read_data[0]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[31]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[30]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[29]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[28]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[27]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[26]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[25]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[24]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[23]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[22]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[21]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[20]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[19]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[18]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[17]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[16]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[15]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[14]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[13]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[12]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[11]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[10]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[9]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[8]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[7]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[6]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[5]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[4]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[3]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[2]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[1]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_weight_read_data[0]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[31]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[30]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[29]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[28]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[27]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[26]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[25]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[24]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[23]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[22]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[21]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[20]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[19]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[18]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[17]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[16]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[15]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[14]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[13]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[12]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[11]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[10]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[9]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[8]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[7]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[6]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[5]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[4]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[3]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[2]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[1]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_result_read_data[0]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[31]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[30]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[29]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[28]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[27]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[26]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[25]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[24]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[23]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[22]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[21]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[20]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[19]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[18]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[17]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[16]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[15]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[14]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[13]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[12]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[11]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[10]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[9]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[8]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[7]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[6]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[5]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[4]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[3]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[2]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[1]'. (UID-401)
+Warning: Design rule attributes from the driving cell will be set on the port 'tb__dut__sram_scratchpad_read_data[0]'. (UID-401)
+#---------------------------------------------------------
+# ASSUME the worst case output load is                 
+# 4 D-flip-flop (D-inputs) and                         
+# 0.013 units of wiring capacitance                     
+#---------------------------------------------------------
+set PORT_LOAD_CELL  NangateOpenCellLibrary_PDKv1_2_v2008_10_slow_nldm/DFFR_X1/D
+set WIRE_LOAD_EST   0.013
+set FANOUT          4
+set PORT_LOAD [expr $WIRE_LOAD_EST + $FANOUT * [load_of $PORT_LOAD_CELL]]
+set_load $PORT_LOAD [all_outputs]
+#---------------------------------------------------------
+# Now set the GOALS for the compile                    
+# In most cases you want minimum area, so set the      
+# goal for maximum area to be 0                        
+#---------------------------------------------------------
+set_max_area 0
+#---------------------------------------------------------
+# This command prevents feedthroughs from input to output and avoids assign statements                 
+#--------------------------------------------------------- 
+set_fix_multiple_port_nets -all -buffer_constants [get_designs]
+#------------------------------------------------------
+# For logic reduction, I want to make one flat design    
+#                                                      
+#------------------------------------------------------
+ungroup -flatten -all
+Information: Updating graph... (UID-83)
+Warning: Design 'MyDesign' contains 1 high-fanout nets. A fanout number of 1000 will be used for delay calculations involving these nets. (TIM-134)
+Information: Timing loop detected. (OPT-150)
+	MAC/C940/DATA2_0 MAC/C940/Z_0 
+Information: Timing loop detected. (OPT-150)
+	MAC/C940/DATA3_0 MAC/C940/Z_0 
+Warning: Disabling timing arc between pins 'DATA2_0' and 'Z_0' on cell 'MAC/C940'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'DATA3_0' and 'Z_0' on cell 'MAC/C940'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'DATA4_0' and 'Z_0' on cell 'MAC/C940'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'DATA5_0' and 'Z_0' on cell 'MAC/C940'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'DATA6_0' and 'Z_0' on cell 'MAC/C940'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'DATA2_0' and 'Z_0' on cell 'MAC/C938'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'DATA2_0' and 'Z_0' on cell 'MAC/C939'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'DATA8_0' and 'Z_0' on cell 'MAC/C940'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'DATA9_0' and 'Z_0' on cell 'MAC/C940'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'DATA10_0' and 'Z_0' on cell 'MAC/C940'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'DATA11_0' and 'Z_0' on cell 'MAC/C940'
+         to break a timing loop. (OPT-314)
+Warning: Disabling timing arc between pins 'DATA12_0' and 'Z_0' on cell 'MAC/C940'
+         to break a timing loop. (OPT-314)
+#---------------------------------------------------------
+# check the design before optimization  
+#---------------------------------------------------------
+#---------------------------------------------------------
+# check_design checks for consistency of design and issues
+# warnings and errors. An error would imply the design is 
+# not compilable. See > man check_design for more information.
+#---------------------------------------------------------
+check_design
+ 
+****************************************
+check_design summary:
+Version:     T-2022.03-SP4
+Date:        Thu Nov 28 20:42:59 2024
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Inputs/Outputs                                                    195
+    Unloaded inputs (LINT-8)                                       32
+    Unconnected ports (LINT-28)                                   160
+    Shorted outputs (LINT-31)                                       1
+    Constant outputs (LINT-52)                                      2
+
+Cells                                                              73
+    Cells do not drive (LINT-1)                                     9
+    Leaf pins connected to undriven nets (LINT-58)                 64
+
+Nets                                                              128
+    Unloaded nets (LINT-2)                                         64
+    Undriven nets (LINT-3)                                         64
+--------------------------------------------------------------------------------
+
+Warning: In design 'MyDesign', cell 'B_15' does not drive any nets. (LINT-1)
+Warning: In design 'MyDesign', cell 'C444' does not drive any nets. (LINT-1)
+Warning: In design 'MyDesign', cell 'MAC/B_30' does not drive any nets. (LINT-1)
+Warning: In design 'MyDesign', cell 'MAC/B_29' does not drive any nets. (LINT-1)
+Warning: In design 'MyDesign', cell 'MAC/B_28' does not drive any nets. (LINT-1)
+Warning: In design 'MyDesign', cell 'MAC/C1069' does not drive any nets. (LINT-1)
+Warning: In design 'MyDesign', cell 'MAC/C1048' does not drive any nets. (LINT-1)
+Warning: In design 'MyDesign', cell 'MAC/C1047' does not drive any nets. (LINT-1)
+Warning: In design 'MyDesign', cell 'MAC/C1026' does not drive any nets. (LINT-1)
+Warning: In design 'MyDesign', net 'weight_num_cols[0]' driven by pin 'MAC/weight_num_cols_reg[0]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[1]' driven by pin 'MAC/weight_num_cols_reg[1]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[2]' driven by pin 'MAC/weight_num_cols_reg[2]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[3]' driven by pin 'MAC/weight_num_cols_reg[3]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[4]' driven by pin 'MAC/weight_num_cols_reg[4]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[5]' driven by pin 'MAC/weight_num_cols_reg[5]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[6]' driven by pin 'MAC/weight_num_cols_reg[6]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[7]' driven by pin 'MAC/weight_num_cols_reg[7]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[8]' driven by pin 'MAC/weight_num_cols_reg[8]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[9]' driven by pin 'MAC/weight_num_cols_reg[9]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[10]' driven by pin 'MAC/weight_num_cols_reg[10]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[11]' driven by pin 'MAC/weight_num_cols_reg[11]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[12]' driven by pin 'MAC/weight_num_cols_reg[12]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[13]' driven by pin 'MAC/weight_num_cols_reg[13]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[14]' driven by pin 'MAC/weight_num_cols_reg[14]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_cols[15]' driven by pin 'MAC/weight_num_cols_reg[15]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[0]' driven by pin 'MAC/weight_num_rows_reg[0]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[1]' driven by pin 'MAC/weight_num_rows_reg[1]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[2]' driven by pin 'MAC/weight_num_rows_reg[2]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[3]' driven by pin 'MAC/weight_num_rows_reg[3]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[4]' driven by pin 'MAC/weight_num_rows_reg[4]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[5]' driven by pin 'MAC/weight_num_rows_reg[5]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[6]' driven by pin 'MAC/weight_num_rows_reg[6]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[7]' driven by pin 'MAC/weight_num_rows_reg[7]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[8]' driven by pin 'MAC/weight_num_rows_reg[8]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[9]' driven by pin 'MAC/weight_num_rows_reg[9]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[10]' driven by pin 'MAC/weight_num_rows_reg[10]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[11]' driven by pin 'MAC/weight_num_rows_reg[11]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[12]' driven by pin 'MAC/weight_num_rows_reg[12]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[13]' driven by pin 'MAC/weight_num_rows_reg[13]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[14]' driven by pin 'MAC/weight_num_rows_reg[14]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'weight_num_rows[15]' driven by pin 'MAC/weight_num_rows_reg[15]/Q' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[0]' driven by pin 'tb__dut__sram_result_read_data[0]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[1]' driven by pin 'tb__dut__sram_result_read_data[1]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[2]' driven by pin 'tb__dut__sram_result_read_data[2]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[3]' driven by pin 'tb__dut__sram_result_read_data[3]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[4]' driven by pin 'tb__dut__sram_result_read_data[4]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[5]' driven by pin 'tb__dut__sram_result_read_data[5]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[6]' driven by pin 'tb__dut__sram_result_read_data[6]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[7]' driven by pin 'tb__dut__sram_result_read_data[7]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[8]' driven by pin 'tb__dut__sram_result_read_data[8]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[9]' driven by pin 'tb__dut__sram_result_read_data[9]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[10]' driven by pin 'tb__dut__sram_result_read_data[10]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[11]' driven by pin 'tb__dut__sram_result_read_data[11]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[12]' driven by pin 'tb__dut__sram_result_read_data[12]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[13]' driven by pin 'tb__dut__sram_result_read_data[13]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[14]' driven by pin 'tb__dut__sram_result_read_data[14]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[15]' driven by pin 'tb__dut__sram_result_read_data[15]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[16]' driven by pin 'tb__dut__sram_result_read_data[16]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[17]' driven by pin 'tb__dut__sram_result_read_data[17]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[18]' driven by pin 'tb__dut__sram_result_read_data[18]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[19]' driven by pin 'tb__dut__sram_result_read_data[19]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[20]' driven by pin 'tb__dut__sram_result_read_data[20]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[21]' driven by pin 'tb__dut__sram_result_read_data[21]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[22]' driven by pin 'tb__dut__sram_result_read_data[22]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[23]' driven by pin 'tb__dut__sram_result_read_data[23]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[24]' driven by pin 'tb__dut__sram_result_read_data[24]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[25]' driven by pin 'tb__dut__sram_result_read_data[25]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[26]' driven by pin 'tb__dut__sram_result_read_data[26]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[27]' driven by pin 'tb__dut__sram_result_read_data[27]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[28]' driven by pin 'tb__dut__sram_result_read_data[28]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[29]' driven by pin 'tb__dut__sram_result_read_data[29]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[30]' driven by pin 'tb__dut__sram_result_read_data[30]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'tb__dut__sram_result_read_data[31]' driven by pin 'tb__dut__sram_result_read_data[31]' has no loads. (LINT-2)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[0]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[1]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[2]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[3]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[4]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[5]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[6]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[7]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[8]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[9]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[10]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[11]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[12]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[13]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[14]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[15]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[16]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[17]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[18]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[19]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[20]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[21]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[22]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[23]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[24]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[25]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[26]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[27]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[28]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[29]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[30]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_weight_num_rows_cols[31]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[0]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[1]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[2]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[3]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[4]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[5]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[6]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[7]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[8]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[9]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[10]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[11]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[12]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[13]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[14]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[15]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[16]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[17]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[18]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[19]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[20]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[21]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[22]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[23]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[24]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[25]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[26]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[27]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[28]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[29]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[30]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', net 'override_input_num_rows_cols[31]' has no drivers.  Logic 0 assumed. (LINT-3)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[31]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[30]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[29]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[28]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[27]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[26]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[25]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[24]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[23]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[22]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[21]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[20]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[19]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[18]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[17]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[16]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[15]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[14]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[13]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[12]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[11]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[10]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[9]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[8]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[7]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[6]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[5]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[4]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[3]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[2]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[1]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', input port 'tb__dut__sram_result_read_data[0]' is unloaded. (LINT-8)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[15]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[14]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[13]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[12]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[11]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[10]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[9]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[8]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[7]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[6]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[5]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[4]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[3]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[2]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[1]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_address[0]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[31]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[30]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[29]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[28]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[27]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[26]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[25]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[24]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[23]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[22]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[21]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[20]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[19]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[18]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[17]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[16]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[15]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[14]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[13]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[12]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[11]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[10]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[9]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[8]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[7]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[6]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[5]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[4]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[3]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[2]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[1]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_input_write_data[0]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[15]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[14]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[13]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[12]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[11]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[10]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[9]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[8]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[7]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[6]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[5]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[4]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[3]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[2]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[1]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_address[0]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[31]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[30]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[29]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[28]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[27]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[26]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[25]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[24]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[23]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[22]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[21]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[20]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[19]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[18]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[17]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[16]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[15]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[14]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[13]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[12]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[11]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[10]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[9]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[8]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[7]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[6]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[5]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[4]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[3]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[2]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[1]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_weight_write_data[0]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[15]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[14]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[13]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[12]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[11]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[10]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[9]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[8]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[7]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[6]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[5]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[4]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[3]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[2]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[1]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_result_read_address[0]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[15]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[14]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[13]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[12]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[11]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[10]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[9]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[8]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[7]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[6]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[5]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[4]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[3]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[2]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[1]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'dut__tb__sram_scratchpad_read_address[0]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[31]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[30]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[29]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[28]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[27]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[26]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[25]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[24]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[23]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[22]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[21]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[20]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[19]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[18]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[17]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[16]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[15]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[14]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[13]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[12]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[11]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[10]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[9]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[8]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[7]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[6]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[5]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[4]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[3]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[2]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[1]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', port 'tb__dut__sram_scratchpad_read_data[0]' is not connected to any nets. (LINT-28)
+Warning: In design 'MyDesign', output port 'dut__tb__sram_input_write_enable' is connected directly to output port 'dut__tb__sram_weight_write_enable'. (LINT-31)
+Warning: In design 'MyDesign', output port 'dut__tb__sram_input_write_enable' is connected directly to 'logic 0'. (LINT-52)
+Warning: In design 'MyDesign', output port 'dut__tb__sram_weight_write_enable' is connected directly to 'logic 0'. (LINT-52)
+Warning: In design 'MyDesign', input pin 'DATA1_31' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[31]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_30' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[30]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_29' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[29]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_28' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[28]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_27' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[27]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_26' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[26]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_25' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[25]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_24' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[24]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_23' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[23]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_22' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[22]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_21' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[21]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_20' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[20]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_19' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[19]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_18' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[18]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_17' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[17]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_16' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[16]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_15' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[15]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_14' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[14]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_13' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[13]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_12' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[12]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_11' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[11]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_10' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[10]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_9' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[9]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_8' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[8]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_7' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[7]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_6' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[6]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_5' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[5]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_4' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[4]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_3' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[3]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_2' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[2]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_1' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[1]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_0' of leaf cell 'MAC/C968' is connected to undriven net 'override_weight_num_rows_cols[0]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_31' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[31]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_30' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[30]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_29' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[29]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_28' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[28]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_27' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[27]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_26' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[26]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_25' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[25]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_24' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[24]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_23' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[23]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_22' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[22]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_21' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[21]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_20' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[20]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_19' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[19]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_18' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[18]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_17' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[17]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_16' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[16]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_15' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[15]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_14' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[14]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_13' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[13]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_12' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[12]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_11' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[11]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_10' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[10]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_9' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[9]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_8' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[8]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_7' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[7]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_6' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[6]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_5' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[5]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_4' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[4]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_3' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[3]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_2' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[2]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_1' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[1]'.  (LINT-58)
+Warning: In design 'MyDesign', input pin 'DATA1_0' of leaf cell 'MAC/C967' is connected to undriven net 'override_input_num_rows_cols[0]'.  (LINT-58)
+#---------------------------------------------------------
+# link performs check for presence of the design components 
+# instantiated within the design. It makes sure that all the 
+# components (either library unit or other designs within the
+# heirarchy) are present in the search path and connects all 
+# of the disparate components logically to the present design
+#---------------------------------------------------------
+link 
+
+  Linking design 'MyDesign'
+  Using the following designs and libraries:
+  --------------------------------------------------------------------------
+  NangateOpenCellLibrary_PDKv1_2_v2008_10_slow_nldm (library)
+                              /mnt/coe/workspace/ece/ece720-common/tech/nangate/NangateOpenCellLibrary_PDKv1_2_v2008_10/liberty/520/NangateOpenCellLibrary_PDKv1_2_v2008_10_slow_nldm.db
+  dw_foundation.sldb (library)
+                              /mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/libraries/syn/dw_foundation.sldb
+
+1

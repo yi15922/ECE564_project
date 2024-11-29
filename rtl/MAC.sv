@@ -14,9 +14,20 @@ module MyMAC(
   input wire MAC_valid                    , 
   output wire MAC_ready                   ,
 
+//---------------------------------------------------------------------------
+//Allow override of cols and rows
+  input wire override_dimensions,
+  input wire [`SRAM_DATA_RANGE] override_input_num_rows_cols, 
+  input wire [`SRAM_DATA_RANGE] override_weight_num_rows_cols,
+
+//Outputs for number of cols and rows
+  output wire [`SRAM_DATA_RANGE] input_num_rows_output, 
+  output wire [`SRAM_DATA_RANGE] input_num_cols_output,
+  output wire [`SRAM_DATA_RANGE] weight_num_rows_output, 
+  output wire [`SRAM_DATA_RANGE] weight_num_cols_output,
 
 //---------------------------------------------------------------------------
-//Address selection signals
+//Read/write start address signals
   input wire [`SRAM_ADDR_RANGE] sram_weight_read_base_address, 
   input wire [`SRAM_ADDR_RANGE] sram_result_write_start_address,
 
@@ -66,7 +77,7 @@ assign dut__tb__sram_result_write_data = sram_result_write_data;
 reg MAC_ready_reg;
 assign MAC_ready = MAC_ready_reg;
 
-reg [15:0] input_col_index, input_row_index, loop_count;
+reg [15:0] loop_count;
 
 
 reg [`SRAM_ADDR_RANGE] input_num_rows, 
@@ -75,6 +86,15 @@ reg [`SRAM_ADDR_RANGE] input_num_rows,
   weight_num_cols, 
   input_read_start_address, 
   weight_read_start_address;
+
+assign input_num_rows_output = input_num_rows; 
+assign input_num_cols_output = input_num_cols; 
+assign weight_num_rows_output = weight_num_rows; 
+assign weight_num_cols_output = weight_num_cols; 
+
+reg [`SRAM_DATA_RANGE] input_num_rows_cols, weight_num_rows_cols; 
+
+reg [`SRAM_ADDR_RANGE] weight_max_addr; 
 
 reg save_dimensions, 
   read_matrix_dimensions, 
@@ -180,7 +200,7 @@ always @(*) begin
       if (loop_count == input_num_cols) begin // Reached the end of an input row
         if (sram_input_read_address == input_num_cols * input_num_rows && 
             // Subtract base address to correctly detect reaching end of matrix
-            sram_weight_read_address - (sram_weight_read_base_address - 1) == weight_num_cols * weight_num_rows) begin
+            sram_weight_read_address - (sram_weight_read_base_address - 1) == weight_max_addr) begin
               calculation_done = 1; 
             end
         next_state = WAIT_FOR_RESULT1;
@@ -245,7 +265,7 @@ always @(posedge clk) begin
   else if (!freeze_address_regs) begin
     // Synchronize the address wrap-around back to 1 with the input reads
     if (input_wraparound) begin
-      if (sram_weight_read_address - (sram_weight_read_base_address - 1) == weight_num_cols * weight_num_rows) begin
+      if (sram_weight_read_address - (sram_weight_read_base_address - 1) == weight_max_addr) begin
         weight_wraparound <= 1;
         // weight_read_start_address <= 1;
         weight_read_start_address <= sram_weight_read_base_address; // Wrap back to dynamic base address instead
@@ -290,13 +310,29 @@ always @(posedge clk) begin
 end
 
 
+
+
 // --------------------- Saving matrix dimensions ----------------------
+always @(*) begin
+  if (override_dimensions) begin
+    input_num_rows_cols = override_input_num_rows_cols; 
+    weight_num_rows_cols = override_weight_num_rows_cols; 
+  end
+  else begin
+    input_num_rows_cols = tb__dut__sram_input_read_data; 
+    weight_num_rows_cols = tb__dut__sram_weight_read_data; 
+  end
+end
+
+
 always @(posedge clk) begin 
   if (save_dimensions) begin
-    input_num_rows <= tb__dut__sram_input_read_data[31:16]; 
-    input_num_cols <= tb__dut__sram_input_read_data[15:0]; 
-    weight_num_rows <= tb__dut__sram_weight_read_data[31:16]; 
-    weight_num_cols <= tb__dut__sram_weight_read_data[15:0]; 
+    input_num_rows <= input_num_rows_cols[31:16]; 
+    input_num_cols <= input_num_rows_cols[15:0]; 
+    weight_num_rows <= weight_num_rows_cols[31:16]; 
+    weight_num_cols <= weight_num_rows_cols[15:0]; 
+
+    weight_max_addr <= weight_num_rows_cols[31:16] * weight_num_rows_cols[15:0]; 
   end
 end
 
