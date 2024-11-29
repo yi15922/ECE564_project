@@ -25,6 +25,8 @@ module MyMAC(
   output wire [`SRAM_DATA_RANGE] input_num_cols_output,
   output wire [`SRAM_DATA_RANGE] weight_num_rows_output, 
   output wire [`SRAM_DATA_RANGE] weight_num_cols_output,
+  output wire [`SRAM_DATA_RANGE] curr_row_output, 
+  output wire [`SRAM_DATA_RANGE] curr_col_output,
 
 //---------------------------------------------------------------------------
 //Read/write start address signals
@@ -86,12 +88,16 @@ reg [`SRAM_ADDR_RANGE] input_num_rows,
   weight_num_rows, 
   weight_num_cols, 
   input_read_start_address, 
-  weight_read_start_address;
+  weight_read_start_address, 
+  curr_col, 
+  curr_row;
 
 assign input_num_rows_output = input_num_rows; 
 assign input_num_cols_output = input_num_cols; 
 assign weight_num_rows_output = weight_num_rows; 
 assign weight_num_cols_output = weight_num_cols; 
+assign curr_row_output = curr_row; 
+assign curr_col_output = curr_col; 
 
 reg [`SRAM_DATA_RANGE] input_num_rows_cols, weight_num_rows_cols; 
 
@@ -195,17 +201,29 @@ always @(*) begin
     WAIT_FOR_DATA2: begin
       zero_accum_result = 1; 
       next_state = ACCUM_LOOP;
+
+      // Edge case for 1x1 input matrix
+      if (input_num_rows == 1 && input_num_cols == 1) begin 
+        zero_accum_result = 1;
+        next_state = WAIT_FOR_RESULT1; 
+        input_wraparound = 1; 
+        if (sram_weight_read_address - (sram_weight_read_base_address - 1) == weight_max_addr) begin
+          calculation_done = 1; 
+        end
+      end
     end
 
     // Stay in this state until a result is ready to populate
     ACCUM_LOOP: begin
       if (loop_count == 2) zero_accum_result = 1; 
+      
+
       if (loop_count == input_num_cols) begin // Reached the end of an input row
         if (sram_input_read_address - (sram_input_read_base_address - 1) == input_num_cols * input_num_rows && 
             // Subtract base address to correctly detect reaching end of matrix
             sram_weight_read_address - (sram_weight_read_base_address - 1) == weight_max_addr) begin
               calculation_done = 1; 
-            end
+        end
         next_state = WAIT_FOR_RESULT1;
         input_wraparound = 1; 
       end 
@@ -216,6 +234,7 @@ always @(*) begin
 
     // The next 2 states waits for the results to exit the pipeline
     WAIT_FOR_RESULT1: begin
+      if (input_num_rows == 1 && input_num_cols == 1) zero_accum_result = 1; 
       freeze_address_regs = 1;
       next_state = WAIT_FOR_RESULT2;
     end
@@ -299,8 +318,13 @@ always @(posedge clk) begin
   end
 
   else begin
+
+    // Edge case: do not increment read address if input is a 1x1 matrix
+    if (input_num_rows == 1 && input_num_cols == 1) begin
+      sram_input_read_address <= sram_input_read_address; 
+    end
     // When weight read address wraps around, update start address with current read address
-    if (weight_wraparound) begin 
+    else if (weight_wraparound) begin 
       input_read_start_address <= sram_input_read_address;
       // weight_wraparound <= 0; 
     end
@@ -350,6 +374,21 @@ always @(posedge clk) begin
 
   if (increment_write_address) begin
     sram_result_write_address <= sram_result_write_address + 1; 
+  end
+end
+
+// ------------------------ Find current row/col written to --------------
+always @(posedge clk) begin 
+  if (MAC_valid) begin 
+    curr_col <= -1; 
+    curr_row <= 0; 
+  end
+  if (capture_data_result) begin
+    curr_col <= curr_col + 1; 
+    if (curr_col == weight_num_cols-1) begin
+      curr_col <= 0; 
+      curr_row <= curr_row + 1; 
+    end
   end
 end
 

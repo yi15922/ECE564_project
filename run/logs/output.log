@@ -3,11 +3,8 @@ Reading pref.tcl
 # 2024.2
 
 # vsim -c -voptargs="+acc" tb_top "+TIMEOUT=1000000" "+num_of_testcases=4" "+test_mode=1" "+epsilon_mult=1.0" "+input_dir=../inputs" "+info_level=0" -do "run -all" 
-# Start time: 12:51:07 on Nov 29,2024
-# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
-# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
-# ** Note: (vopt-143) Recognized 1 FSM in module "MyDesign(fast)".
-# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# Start time: 16:58:25 on Nov 29,2024
+# ** Note: (vsim-8009) Loading existing optimized design _opt
 # //  Questa Sim
 # //  Version 2024.2 linux May 20 2024
 # //
@@ -71,13 +68,13 @@ Reading pref.tcl
 # [         27] Result MATCH: expected_result =       12923, dut_result =       12923
 # ---------------- Checking the Attention matrix result------------------  
 # [         28] Result MATCH: expected_result =     2732156, dut_result =     2732156
-# [         29]: Difference =     -466194, expected_result =     2440201, dut_result =     2906395
-# [         30]: Difference =     -302959, expected_result =     2137242, dut_result =     2440201
-# [         31]: Difference =      807667, expected_result =     2996670, dut_result =     2189003
+# [         29] Result MATCH: expected_result =     2440201, dut_result =     2440201
+# [         30] Result MATCH: expected_result =     2137242, dut_result =     2137242
+# [         31] Result MATCH: expected_result =     2996670, dut_result =     2996670
 # [         32] Result MATCH: expected_result =     2307880, dut_result =     2307880
-# [         33]: Difference =     -379470, expected_result =     2073303, dut_result =     2452773
-# [         34]: Difference =     -253757, expected_result =     1819546, dut_result =     2073303
-# [         35]: Difference =      700357, expected_result =     2537938, dut_result =     1837581
+# [         33] Result MATCH: expected_result =     2073303, dut_result =     2073303
+# [         34] Result MATCH: expected_result =     1819546, dut_result =     1819546
+# [         35] Result MATCH: expected_result =     2537938, dut_result =     2537938
 # INFO:LVL0: ######## Running Test: 2 ########
 # INFO: Reading memory file: ../inputs/proj_int_test_self_attn_2_input.dat
 # INFO: Reading memory file: ../inputs/proj_int_test_self_attn_2_weight.dat
@@ -104,10 +101,10 @@ Reading pref.tcl
 # [         14] Result MATCH: expected_result =        5395, dut_result =        5395
 # [         15] Result MATCH: expected_result =        4160, dut_result =        4160
 # ---------------- Checking the Attention matrix result------------------  
-# [         16]: Difference =      129416, expected_result =     1010068, dut_result =      880652
-# [         17]: Difference =     -164696, expected_result =      687376, dut_result =      852072
-# [         18]: Difference =      116480, expected_result =      918190, dut_result =      801710
-# [         19]: Difference =     -151060, expected_result =      626340, dut_result =      777400
+# [         16] Result MATCH: expected_result =     1010068, dut_result =     1010068
+# [         17] Result MATCH: expected_result =      687376, dut_result =      687376
+# [         18] Result MATCH: expected_result =      918190, dut_result =      918190
+# [         19] Result MATCH: expected_result =      626340, dut_result =      626340
 # INFO:LVL0: ######## Running Test: 3 ########
 # INFO: Reading memory file: ../inputs/proj_int_test_self_attn_3_input.dat
 # INFO: Reading memory file: ../inputs/proj_int_test_self_attn_3_weight.dat
@@ -230,22 +227,22 @@ Reading pref.tcl
 # [        110] Result MATCH: expected_result =       18000, dut_result =       18000
 # [        111] Result MATCH: expected_result =       16470, dut_result =       16470
 # ---------------- Checking the Attention matrix result------------------  
-# [        112]: Difference =     2400708, expected_result =     8517195, dut_result =     6116487
-# [        113]: Difference =     -787494, expected_result =     9878640, dut_result =    10666134
-# [        114]: Difference =     2396340, expected_result =     8493735, dut_result =     6097395
-# [        115]: Difference =     -798966, expected_result =     9839616, dut_result =    10638582
-# [        116]: Difference =      971196, expected_result =     3446865, dut_result =     2475669
-# [        117]: Difference =     -316518, expected_result =     3999720, dut_result =     4316238
-# [        118]: Difference =     1556100, expected_result =     5532935, dut_result =     3976835
-# [        119]: Difference =     -490626, expected_result =     6435496, dut_result =     6926122
-# [        120]: Difference =     2712792, expected_result =     9603590, dut_result =     6890798
-# [        121]: Difference =     -923592, expected_result =    11107816, dut_result =    12031408
-# [        122]: Difference =     3195120, expected_result =    11324980, dut_result =     8129860
-# [        123]: Difference =    -1065288, expected_result =    13119488, dut_result =    14184776
-# [        124]: Difference =     3369732, expected_result =    11983435, dut_result =     8613703
-# [        125]: Difference =    -1059414, expected_result =    13941008, dut_result =    15000422
-# [        126]: Difference =     2907036, expected_result =    10305405, dut_result =     7398369
-# [        127]: Difference =     -966762, expected_result =    11940624, dut_result =    12907386
+# [        112] Result MATCH: expected_result =     8517195, dut_result =     8517195
+# [        113] Result MATCH: expected_result =     9878640, dut_result =     9878640
+# [        114] Result MATCH: expected_result =     8493735, dut_result =     8493735
+# [        115] Result MATCH: expected_result =     9839616, dut_result =     9839616
+# [        116] Result MATCH: expected_result =     3446865, dut_result =     3446865
+# [        117] Result MATCH: expected_result =     3999720, dut_result =     3999720
+# [        118] Result MATCH: expected_result =     5532935, dut_result =     5532935
+# [        119] Result MATCH: expected_result =     6435496, dut_result =     6435496
+# [        120] Result MATCH: expected_result =     9603590, dut_result =     9603590
+# [        121] Result MATCH: expected_result =    11107816, dut_result =    11107816
+# [        122] Result MATCH: expected_result =    11324980, dut_result =    11324980
+# [        123] Result MATCH: expected_result =    13119488, dut_result =    13119488
+# [        124] Result MATCH: expected_result =    11983435, dut_result =    11983435
+# [        125] Result MATCH: expected_result =    13941008, dut_result =    13941008
+# [        126] Result MATCH: expected_result =    10305405, dut_result =    10305405
+# [        127] Result MATCH: expected_result =    11940624, dut_result =    11940624
 # INFO:LVL0: ######## Running Test: 4 ########
 # INFO: Reading memory file: ../inputs/proj_int_test_self_attn_4_input.dat
 # INFO: Reading memory file: ../inputs/proj_int_test_self_attn_4_weight.dat
@@ -281,22 +278,22 @@ Reading pref.tcl
 # ---------------- Checking the Score matrix result------------------  
 # [         24] Result MATCH: expected_result =       37356, dut_result =       37356
 # ---------------- Checking the Attention matrix result------------------  
-# [         25]: Difference =     2502852, expected_result =     2502852, dut_result =           0
-# [         26]: Difference =     2951124, expected_result =     2951124, dut_result =           0
-# [         27]: Difference =     3025836, expected_result =     3025836, dut_result =           0
-# [         28]: Difference =     2801700, expected_result =     2801700, dut_result =           0
-# [         29]: Difference =     1606308, expected_result =     1606308, dut_result =           0
-# [         30]: Difference =     1643664, expected_result =     1643664, dut_result =           0
-# [         31]: Difference =     3100548, expected_result =     3100548, dut_result =           0
-# [         32]: Difference =     3959736, expected_result =     3959736, dut_result =           0
+# [         25] Result MATCH: expected_result =     2502852, dut_result =     2502852
+# [         26] Result MATCH: expected_result =     2951124, dut_result =     2951124
+# [         27] Result MATCH: expected_result =     3025836, dut_result =     3025836
+# [         28] Result MATCH: expected_result =     2801700, dut_result =     2801700
+# [         29] Result MATCH: expected_result =     1606308, dut_result =     1606308
+# [         30] Result MATCH: expected_result =     1643664, dut_result =     1643664
+# [         31] Result MATCH: expected_result =     3100548, dut_result =     3100548
+# [         32] Result MATCH: expected_result =     3959736, dut_result =     3959736
 # ------------------------------------------------------------------------ 
 # INFO: Total number of cases       : 4
-# INFO: Total number of result pass : 183 / 217
-# INFO: Final pass percentage       :  84.00
-# INFO: Final Time Result           : 5263650 ns
-# INFO: Final Cycle Result          : 1052730 cycles
+# INFO: Total number of result pass : 217 / 217
+# INFO: Final pass percentage       : 100.00
+# INFO: Final Time Result           : 20770 ns
+# INFO: Final Cycle Result          : 4154 cycles
 # 
 # ** Note: $finish    : ../testbench/testbench.sv(451)
-#    Time: 5264390 ns  Iteration: 1  Instance: /tb_top
-# End time: 12:51:11 on Nov 29,2024, Elapsed time: 0:00:04
-# Errors: 0, Warnings: 1
+#    Time: 21510 ns  Iteration: 1  Instance: /tb_top
+# End time: 16:58:26 on Nov 29,2024, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0

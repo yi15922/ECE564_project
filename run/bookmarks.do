@@ -9,3 +9,4 @@ bookmark define -type wave -cid .main_pane.wave -alias {Test 2 S calc} -data {{{
 bookmark define -type wave -cid .main_pane.wave -alias {Test 2 ind S calc} -data {{{2010 ns} {2199 ns}} 10}
 bookmark define -type wave -cid .main_pane.wave -alias {Test 2 ind Q calc} -data {{{937 ns} {1126 ns}} 8}
 bookmark define -type wave -cid .main_pane.wave -alias {Test 1 ind Z calc} -data {{{3573 ns} {3762 ns}} 0}
+bookmark define -type wave -cid .main_pane.wave -alias {Test 4 ind Z calc} -data {{{3371 ns} {3560 ns}} 8}

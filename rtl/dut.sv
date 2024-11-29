@@ -56,7 +56,7 @@ reg [`SRAM_DATA_RANGE] MAC_input_A_read_data, MAC_input_B_read_data;
 // Scratchpad control registers
 reg scratchpad_write_enable; 
 reg [`SRAM_DATA_RANGE] scratchpad_write_data; 
-reg [`SRAM_ADDR_RANGE] scratchpad_write_address;
+reg [`SRAM_ADDR_RANGE] scratchpad_write_address, transposed_addr;
 
 assign dut__tb__sram_scratchpad_write_enable = scratchpad_write_enable; 
 assign dut__tb__sram_scratchpad_write_data = scratchpad_write_data; 
@@ -74,6 +74,7 @@ wire [`SRAM_DATA_RANGE] input_num_rows, input_num_cols, weight_num_rows, weight_
 reg [`SRAM_ADDR_RANGE] sram_weight_read_base_address, sram_input_read_base_address, sram_result_write_start_address, new_input_read_base_address, new_weight_read_base_address = 0; 
 reg [`SRAM_ADDR_RANGE] scratchpad_V_read_start_addr, scratchpad_K_read_start_addr, result_S_read_start_addr = 0;
 reg [`SRAM_DATA_RANGE] override_input_num_rows_cols, override_weight_num_rows_cols; 
+wire [`SRAM_DATA_RANGE] MAC_curr_row, MAC_curr_col; 
 
 // FSM control signals
 reg reset_read_write_start_addr, 
@@ -83,7 +84,8 @@ reg reset_read_write_start_addr,
     save_result_S_read_start_addr,
     write_to_scratchpad, 
     MAC_input_A_from_result_SRAM, 
-    MAC_input_B_from_scratchpad_SRAM; 
+    MAC_input_B_from_scratchpad_SRAM, 
+    transpose_scratchpad_write_address; 
 
 
 //--------------------- Setting up the FSM ------------------------------
@@ -123,6 +125,7 @@ always @(*) begin
   MAC_input_A_from_result_SRAM = 0; 
   MAC_input_B_from_scratchpad_SRAM = 0; 
   override_input_weight_read_base_addresses = 0; 
+  transpose_scratchpad_write_address = 0; 
 
   case (current_state)
     RESET: begin
@@ -180,6 +183,7 @@ always @(*) begin
     WAIT_FOR_V_CALC: begin 
       save_scratchpad_V_read_start_addr = 1; 
       write_to_scratchpad = 1; 
+      transpose_scratchpad_write_address = 1;
       if (!MAC_ready) begin
         next_state = WAIT_FOR_V_CALC; 
       end
@@ -271,12 +275,22 @@ always @(posedge clk) begin
 end
 
 
+// ------------------------ Transpose address calculation -----------------
+assign transposed_addr = MAC_curr_col * input_num_rows + MAC_curr_row + sram_result_write_start_address; 
+
 // ------------------------ Writing to scratchpad -------------------------
 always @(posedge clk) begin
   if (write_to_scratchpad) begin // Write MAC result to scratchpad simultaneously
     scratchpad_write_enable <= dut__tb__sram_result_write_enable; 
     // scratchpad_write_address <= dut__tb__sram_result_write_address - sram_result_write_start_address; 
-    scratchpad_write_address <= dut__tb__sram_result_write_address; 
+    
+    // Transpose the address when requested, however do not transpose if input is 1x1
+    if (transpose_scratchpad_write_address && !(input_num_cols == 1 && input_num_rows == 1)) begin 
+      scratchpad_write_address <= transposed_addr; 
+    end 
+    else begin
+      scratchpad_write_address <= dut__tb__sram_result_write_address; 
+    end
     scratchpad_write_data <= dut__tb__sram_result_write_data; 
 
     
@@ -357,10 +371,13 @@ MyMAC MAC (
   .override_dimensions(override_dimensions), 
   .override_input_num_rows_cols(override_input_num_rows_cols), 
   .override_weight_num_rows_cols(override_weight_num_rows_cols),
+
   .input_num_rows_output(input_num_rows), 
   .input_num_cols_output(input_num_cols), 
   .weight_num_rows_output(weight_num_rows), 
   .weight_num_cols_output(weight_num_cols), 
+  .curr_row_output(MAC_curr_row), 
+  .curr_col_output(MAC_curr_col), 
 
   .sram_weight_read_base_address(sram_weight_read_base_address), 
   .sram_input_read_base_address(sram_input_read_base_address),
