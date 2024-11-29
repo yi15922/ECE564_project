@@ -1,7 +1,10 @@
 # A bookmark named "bookmark0" has been added for window "Wave"
 # A bookmark named "bookmark1" has been added for window "Wave"
 # A bookmark named "bookmark2" has been added for window "Wave"
-# A bookmarks file was found in the current directory with 3 bookmarks
+# A bookmark named "bookmark3" has been added for window "Wave"
+# A bookmark named "bookmark4" has been added for window "Wave"
+# A bookmark named "bookmark5" has been added for window "Wave"
+# A bookmarks file was found in the current directory with 6 bookmarks
 # //  Questa Sim
 # //  Version 2024.2 linux May 20 2024
 # //
@@ -16,12 +19,9 @@
 # // of the Customer's facilities without the express written permission of SISW,
 # // and may not be used in any way not expressly authorized by SISW.
 # //
-# vsim -voptargs="+acc" tb_top "+TIMEOUT=1000000" "+num_of_testcases=1" "+epsilon_mult=1.0" "+input_dir=../inputs" -do "log -r *; set NoQuitOnFinish 1; do wave.do; run -all" 
-# Start time: 20:23:30 on Nov 28,2024
-# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
-# ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
-# ** Note: (vopt-143) Recognized 1 FSM in module "MyDesign(fast)".
-# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
+# vsim -voptargs="+acc" tb_top "+TIMEOUT=1000000" "+num_of_testcases=1" "+epsilon_mult=1.0" "+test_mode=0" "+test_number=2" "+input_dir=../inputs" "+info_level=0" -do "log -r *; set NoQuitOnFinish 1; do wave.do; run -all" 
+# Start time: 03:24:52 on Nov 29,2024
+# ** Note: (vsim-8009) Loading existing optimized design _opt
 # Loading sv_std.std
 # Loading work.tb_top(fast)
 # Loading work.sram(fast)
@@ -32,7 +32,10 @@
 # Bookmark "bookmark0" already exists with that definition in window "Wave", ignoring
 # Bookmark "bookmark1" already exists with that definition in window "Wave", ignoring
 # Bookmark "bookmark2" already exists with that definition in window "Wave", ignoring
-# A bookmarks file was found in the current directory with 3 bookmarks
+# Bookmark "bookmark3" already exists with that definition in window "Wave", ignoring
+# Bookmark "bookmark4" already exists with that definition in window "Wave", ignoring
+# Bookmark "bookmark5" already exists with that definition in window "Wave", ignoring
+# A bookmarks file was found in the current directory with 6 bookmarks
 # log -r *
 #  set NoQuitOnFinish 1
 # 1
@@ -40,62 +43,49 @@
 #  run -all
 # INFO: number of testcases:           1
 # INFO: DONE WITH RESETING DUT
-# INFO:LVL0: ######## Running Test: 1 ########
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_1_input.dat
-# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_1_weight.dat
-# INFO: reading ../inputs/proj_int_test_self_attn_1_result.dat
-# INFO: Dimension of result matrix [          2,           4]
+# Running individual test:           2
+# INFO:LVL0: ######## Running Test: 2 ########
+# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_2_input.dat
+# INFO: Reading memory file: ../inputs/proj_int_test_self_attn_2_weight.dat
+# INFO: reading ../inputs/proj_int_test_self_attn_2_result.dat
+# INFO: Dimension of result matrix [          2,           2]
 # ---------------- Checking the Query matrix result------------------  
-# [          0] Result MATCH: expected_result =          45, dut_result =          45
-# [          1] Result MATCH: expected_result =          78, dut_result =          78
-# [          2] Result MATCH: expected_result =          40, dut_result =          40
-# [          3] Result MATCH: expected_result =          58, dut_result =          58
-# [          4] Result MATCH: expected_result =          52, dut_result =          52
-# [          5] Result MATCH: expected_result =          35, dut_result =          35
-# [          6] Result MATCH: expected_result =          22, dut_result =          22
-# [          7] Result MATCH: expected_result =          62, dut_result =          62
+# [          0] Result MATCH: expected_result =          46, dut_result =          46
+# [          1] Result MATCH: expected_result =          32, dut_result =          32
+# [          2] Result MATCH: expected_result =          26, dut_result =          26
+# [          3] Result MATCH: expected_result =          39, dut_result =          39
 # ---------------- Checking the Key matrix result------------------  
-# [          8] Result MATCH: expected_result =          99, dut_result =          99
-# [          9] Result MATCH: expected_result =          57, dut_result =          57
-# [         10] Result MATCH: expected_result =          46, dut_result =          46
-# [         11] Result MATCH: expected_result =          99, dut_result =          99
-# [         12] Result MATCH: expected_result =          89, dut_result =          89
-# [         13] Result MATCH: expected_result =          65, dut_result =          65
-# [         14] Result MATCH: expected_result =          51, dut_result =          51
-# [         15] Result MATCH: expected_result =          79, dut_result =          79
+# [          4] Result MATCH: expected_result =          59, dut_result =          59
+# [          5] Result MATCH: expected_result =          99, dut_result =          99
+# [          6] Result MATCH: expected_result =          49, dut_result =          49
+# [          7] Result MATCH: expected_result =          74, dut_result =          74
 # ---------------- Checking the Value matrix result------------------  
-# [         16] Result MATCH: expected_result =          81, dut_result =          81
-# [         17] Result MATCH: expected_result =          89, dut_result =          89
-# [         18] Result MATCH: expected_result =          83, dut_result =          83
-# [         19] Result MATCH: expected_result =          98, dut_result =          98
-# [         20] Result MATCH: expected_result =          89, dut_result =          89
-# [         21] Result MATCH: expected_result =          62, dut_result =          62
-# [         22] Result MATCH: expected_result =          49, dut_result =          49
-# [         23] Result MATCH: expected_result =          88, dut_result =          88
+# [          8] Result MATCH: expected_result =          90, dut_result =          90
+# [          9] Result MATCH: expected_result =          76, dut_result =          76
+# [         10] Result MATCH: expected_result =         104, dut_result =         104
+# [         11] Result MATCH: expected_result =          52, dut_result =          52
 # ---------------- Checking the Score matrix result------------------  
-# [         24]: ERROR: SRAM result entry is missing
-# [         25]: ERROR: SRAM result entry is missing
-# [         26]: ERROR: SRAM result entry is missing
-# [         27]: ERROR: SRAM result entry is missing
+# [         12]: Difference =        5882, expected_result =        5882, dut_result =           0
+# [         13]: Difference =        4622, expected_result =        4622, dut_result =           0
+# [         14]: Difference =        5395, expected_result =        5395, dut_result =           0
+# [         15]: Difference =        4160, expected_result =        4160, dut_result =           0
 # ---------------- Checking the Attention matrix result------------------  
-# [         28]: ERROR: SRAM result entry is missing
-# [         29]: ERROR: SRAM result entry is missing
-# [         30]: ERROR: SRAM result entry is missing
-# [         31]: ERROR: SRAM result entry is missing
-# [         32]: ERROR: SRAM result entry is missing
-# [         33]: ERROR: SRAM result entry is missing
-# [         34]: ERROR: SRAM result entry is missing
-# [         35]: ERROR: SRAM result entry is missing
+# [         16]: ERROR: SRAM result entry is missing
+# [         17]: ERROR: SRAM result entry is missing
+# [         18]: ERROR: SRAM result entry is missing
+# [         19]: ERROR: SRAM result entry is missing
 # ------------------------------------------------------------------------ 
 # INFO: Total number of cases       : 1
-# INFO: Total number of result pass : 24 / 36
-# INFO: Final pass percentage       :  66.00
-# INFO: Final Time Result           : 2440 ns
-# INFO: Final Cycle Result          : 488 cycles
+# INFO: Total number of result pass : 12 / 20
+# INFO: Final pass percentage       :  60.00
+# INFO: Final Time Result           : 2623200 ns
+# INFO: Final Cycle Result          : 524640 cycles
 # 
 # ** Note: $finish    : ../testbench/testbench.sv(451)
-#    Time: 3180 ns  Iteration: 1  Instance: /tb_top
+#    Time: 2623940 ns  Iteration: 1  Instance: /tb_top
 # 1
 # Break in Module tb_top at ../testbench/testbench.sv line 451
-# End time: 20:42:36 on Nov 28,2024, Elapsed time: 0:19:06
-# Errors: 0, Warnings: 1
+add wave -position insertpoint  \
+sim:/tb_top/dut/MAC/current_state
+add wave -position insertpoint  \
+sim:/tb_top/dut/MAC/loop_count

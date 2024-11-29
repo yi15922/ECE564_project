@@ -47,7 +47,8 @@ module MyDesign(
 );
 
 // Multiplexed MAC inputs and outputs
-
+wire [`SRAM_ADDR_RANGE] MAC_input_A_read_addr, MAC_input_B_read_addr;
+reg [`SRAM_DATA_RANGE] MAC_input_A_read_data, MAC_input_B_read_data; 
 
 
 
@@ -67,16 +68,18 @@ reg dut_ready_reg;
 assign dut_ready = dut_ready_reg; 
 
 // MAC control signals
-reg MAC_valid, override_dimensions; 
+reg MAC_valid, override_dimensions, override_input_weight_read_base_addresses; 
 wire MAC_ready;
 wire [`SRAM_DATA_RANGE] input_num_rows, input_num_cols, weight_num_rows, weight_num_cols; 
-reg [`SRAM_ADDR_RANGE] sram_weight_read_base_address, sram_result_write_start_address = 0; 
+reg [`SRAM_ADDR_RANGE] sram_weight_read_base_address, sram_input_read_base_address, sram_result_write_start_address, new_input_read_base_address, new_weight_read_base_address = 0; 
 reg [`SRAM_DATA_RANGE] override_input_num_rows_cols, override_weight_num_rows_cols; 
 
 // FSM control signals
-reg zero_read_write_start_addr, 
+reg reset_read_write_start_addr, 
     save_current_read_write_addr, 
-    write_to_scratchpad; 
+    write_to_scratchpad, 
+    MAC_input_A_from_result_SRAM, 
+    MAC_input_B_from_scratchpad_SRAM; 
 
 
 //--------------------- Setting up the FSM ------------------------------
@@ -87,7 +90,9 @@ parameter [3:0] // synopsys enum states
   START_K_CALC = 4'd3, 
   WAIT_FOR_K_CALC = 4'd4, 
   START_V_CALC = 4'd5, 
-  WAIT_FOR_V_CALC = 4'd6; 
+  WAIT_FOR_V_CALC = 4'd6, 
+  START_S_CALC = 4'd7, 
+  WAIT_FOR_S_CALC = 4'd8; 
 
 reg [3:0] /* synopsys enum states */ current_state, next_state;
 // synopsys state_vector current_state
@@ -103,14 +108,17 @@ always @(*) begin
   dut_ready_reg = 0; 
   MAC_valid = 0; 
   override_dimensions = 0; 
-  zero_read_write_start_addr = 0; 
+  reset_read_write_start_addr = 0; 
   save_current_read_write_addr = 0; 
   write_to_scratchpad = 0; 
+  MAC_input_A_from_result_SRAM = 0; 
+  MAC_input_B_from_scratchpad_SRAM = 0; 
+  override_input_weight_read_base_addresses = 0; 
 
   case (current_state)
     RESET: begin
       dut_ready_reg = 1; 
-      zero_read_write_start_addr = 1; 
+      reset_read_write_start_addr = 1; 
       if (dut_valid) begin 
         next_state = START_Q_CALC; 
       end
@@ -165,6 +173,33 @@ always @(*) begin
       end
       else begin 
         save_current_read_write_addr = 1; 
+        next_state = START_S_CALC; 
+      end
+    end
+
+    START_S_CALC: begin
+      if (!MAC_ready) next_state = START_S_CALC;
+      else begin 
+        MAC_valid = 1; 
+        sram_input_read_base_address = 0; 
+        sram_weight_read_base_address = 0; 
+        override_input_weight_read_base_addresses = 1; 
+        override_input_num_rows_cols = {input_num_rows[15:0], weight_num_cols[15:0]};
+        override_weight_num_rows_cols = {weight_num_cols[15:0], input_num_rows[15:0]}; 
+        override_dimensions = 1; 
+        next_state = WAIT_FOR_S_CALC; 
+      end
+    end
+
+    WAIT_FOR_S_CALC: begin
+      MAC_input_A_from_result_SRAM = 1; 
+      MAC_input_B_from_scratchpad_SRAM = 1; 
+      override_dimensions = 1; 
+      if (!MAC_ready) begin
+        next_state = WAIT_FOR_S_CALC;
+      end
+      else begin 
+        save_current_read_write_addr = 1; 
         next_state = RESET; 
       end
     end
@@ -176,11 +211,17 @@ end
 
 // ----------------------- Read/Write start address calculation -----------
 always @(posedge clk) begin
-  // Zero the read/write start addresses 
-  if (zero_read_write_start_addr) begin 
+  // Reset the read/write start addresses to initial values
+  if (reset_read_write_start_addr) begin 
     sram_weight_read_base_address <= 1; 
+    sram_input_read_base_address <= 1; 
     sram_result_write_start_address <= 0;
   end
+
+  // if (override_input_weight_read_base_addresses) begin
+  //   sram_input_read_base_address <= new_input_read_base_address; 
+  //   sram_weight_read_base_address <= new_weight_read_base_address;
+  // end
 
   // Save the current read/write start address + 1 to use as new base
   if (save_current_read_write_addr) begin
@@ -203,6 +244,44 @@ always @(posedge clk) begin
 end
 
 
+// ----------------------- Controlling MAC input interface muxes ---------
+
+assign dut__tb__sram_result_read_address = MAC_input_A_read_addr; 
+assign dut__tb__sram_input_read_address = MAC_input_A_read_addr; 
+assign MAC_input_A_read_data = MAC_input_A_from_result_SRAM ? tb__dut__sram_result_read_data : tb__dut__sram_input_read_data; 
+
+assign dut__tb__sram_weight_read_address = MAC_input_B_read_addr; 
+assign dut__tb__sram_scratchpad_read_address = MAC_input_B_read_addr;
+assign MAC_input_B_read_data = MAC_input_B_from_scratchpad_SRAM ? tb__dut__sram_scratchpad_read_data : tb__dut__sram_weight_read_data;
+
+// always @(*) begin
+//   // MAC input A mux
+//   if (MAC_input_A_from_result_SRAM) begin
+//     assign dut__tb__sram_result_read_address = MAC_input_A_read_addr; 
+//     MAC_input_A_read_data = tb__dut__sram_result_read_data; 
+//   end
+//   else begin
+//     assign dut__tb__sram_input_read_address = MAC_input_A_read_addr; 
+//     MAC_input_A_read_data = tb__dut__sram_input_read_data; 
+//   end
+
+
+//   // MAC input B mux
+//   if (MAC_input_B_from_result_SRAM) begin
+//     MAC_input_B_read_addr = dut__tb__sram_result_read_address; 
+//     MAC_input_B_read_data = tb__dut__sram_result_read_data; 
+//   end
+//   else if (MAC_input_B_from_scratchpad_SRAM) begin
+//     MAC_input_B_read_addr = dut__tb__sram_scratchpad_read_address; 
+//     MAC_input_B_read_data = tb__dut__sram_scratchpad_read_data; 
+//   end
+//   else begin
+//     MAC_input_B_read_addr = dut__tb__sram_weight_read_address; 
+//     MAC_input_B_read_data = tb__dut__sram_weight_read_data; 
+//   end
+// end
+
+
 
 
 // --------------------- MAC Instance ------------------------------------
@@ -223,19 +302,20 @@ MyMAC MAC (
   .weight_num_cols_output(weight_num_cols), 
 
   .sram_weight_read_base_address(sram_weight_read_base_address), 
+  .sram_input_read_base_address(sram_input_read_base_address),
   .sram_result_write_start_address(sram_result_write_start_address),
 
   .dut__tb__sram_input_write_enable(dut__tb__sram_input_write_enable), 
   .dut__tb__sram_input_write_address(dut__tb__sram_input_write_address), 
   .dut__tb__sram_input_write_data(dut__tb__sram_input_write_data), 
-  .dut__tb__sram_input_read_address(dut__tb__sram_input_read_address), 
-  .tb__dut__sram_input_read_data(tb__dut__sram_input_read_data), 
+  .dut__tb__sram_input_read_address(MAC_input_A_read_addr), 
+  .tb__dut__sram_input_read_data(MAC_input_A_read_data), 
 
   .dut__tb__sram_weight_write_enable(dut__tb__sram_weight_write_enable), 
   .dut__tb__sram_weight_write_address(dut__tb__sram_weight_write_address), 
   .dut__tb__sram_weight_write_data(dut__tb__sram_weight_write_data), 
-  .dut__tb__sram_weight_read_address(dut__tb__sram_weight_read_address), 
-  .tb__dut__sram_weight_read_data(tb__dut__sram_weight_read_data), 
+  .dut__tb__sram_weight_read_address(MAC_input_B_read_addr), 
+  .tb__dut__sram_weight_read_data(MAC_input_B_read_data), 
 
   .dut__tb__sram_result_write_enable(dut__tb__sram_result_write_enable), 
   .dut__tb__sram_result_write_address(dut__tb__sram_result_write_address), 

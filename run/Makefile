@@ -5,10 +5,10 @@ DPI_SRC=$(wildcard ../dpi/*.c)
 DW_SRC_PATH=/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver
 DW_SRC=$(shell find ${DW_SRC_PATH} -name "DW_fp*.v" -printf "%p ")
 EPSILON_MULT_TEST=1.0
-NUMBER_OF_TEST=1
+NUMBER_OF_TEST=4
 INFO_LEVEL?=0
 TIMEOUT=1000000
-TEST_NUMBER=1
+TEST_NUMBER=2
 
 
 build-dw:

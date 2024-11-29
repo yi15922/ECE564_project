@@ -49,6 +49,50 @@ R0
 R1
 R0
 R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
+R0
+R1
 !s11f vlog 2024.2 2024.05, May 20 2024
 13
 !s112 1.1
@@ -58,10 +102,10 @@ R1
 cModel Technology
 Z2 d/mnt/ncsudrive/y/ychen282/ECE564/project/run
 T_opt
-!s110 1732843412
-VAYVT>CPj=`YdhATER2cd;0
+!s110 1732865892
+VlJG6cfghoC7jMIG[HcPQR0
 04 6 4 work tb_top fast 0
-=1-000ae431a4f1-67491793-7ec2b-85811
+=1-000ae431a4f1-67496f63-14c0b-1cb2cb
 R1
 !s12f OEM100
 !s12b OEM100
@@ -71,6 +115,7 @@ o-quiet -auto_acc_if_foreign -work work +acc
 Z3 tCvgOpt 0
 n@_opt
 OE;O;2024.2;79
+R2
 vDW_fp_add
 Z4 2/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_dp4.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_exp.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_ln.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_dp2.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_div_DG.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_exp2.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_sincos.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_recip_DG.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_invsqrt.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_sum4.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_i2flt.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_addsub_DG.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_mac.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_ifp_conv.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_cmp_DG.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_cmp.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_recip.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_sum3_DG.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_sub_DG.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_sqrt.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_add.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_square.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_div_seq.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_add_DG.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_addsub.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_mult_DG.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_div.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_sum3.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_sub.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_mult.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_dp3.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_flt2i.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_mac_DG.v|/mnt/apps/public/COE/synopsys_apps/syn/T-2022.03-SP4/dw/sim_ver/DW_fp_log2.v
 Z5 !s110 1732756658
@@ -619,11 +664,11 @@ r1
 !s85 0
 31
 !s108 1732758379.000000
-Z20 !s107 ../rtl/common/common.vh|../rtl/MAC.sv|../rtl/dut.sv|../testbench/sram.sv|../testbench/testbench.sv|
-Z21 !s90 -sv|+incdir+../rtl/common|../testbench/testbench.sv|../testbench/sram.sv|../rtl/dut.sv|../rtl/MAC.sv|
+!s107 ../rtl/common/common.vh|../rtl/MAC.sv|../rtl/dut.sv|../testbench/sram.sv|../testbench/testbench.sv|
+Z20 !s90 -sv|+incdir+../rtl/common|../testbench/testbench.sv|../testbench/sram.sv|../rtl/dut.sv|../rtl/MAC.sv|
 !i113 0
-Z22 o-sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
-Z23 !s92 -sv +incdir+../rtl/common -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z21 o-sv -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
+Z22 !s92 -sv +incdir+../rtl/common -L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact
 R3
 n@d@w_fp_mac_inst
 vDW_fp_mult
@@ -918,61 +963,61 @@ n@d@w_fp_sum4
 vMyDesign
 R16
 R17
-Z24 !s110 1732843386
+Z23 !s110 1732868677
 !i10b 1
-!s100 O^^>358Ym1`YGfn5?AN7T0
-IJcZk4=;RjNOdaHR>[n2Ym0
+!s100 FZ`dkfWUo``Kzd[;ooNgI0
+IRV^MTnE2g`064kLIfJ1Y[3
 S1
 R2
-w1732843373
+w1732865879
 8../rtl/dut.sv
 F../rtl/dut.sv
-!i122 54
-L0 6 244
+!i122 109
+L0 6 324
 R7
 R8
 r1
 !s85 0
 31
-Z25 !s108 1732843385.000000
+Z24 !s108 1732868676.000000
+Z25 !s107 ../rtl/common/common.vh|../rtl/MAC.sv|../rtl/dut.sv|../testbench/sram.sv|../testbench/testbench.sv|
 R20
-R21
 !i113 0
+R21
 R22
-R23
 R3
 n@my@design
 vMyMAC
 R16
 R17
-R24
+R23
 !i10b 1
-!s100 4VnIo>]_B8@4ENAR]oAnC2
-I:3NloSe]gIJ`9TaZ8L7=f3
+!s100 7KZG67Wa=T_THJF;dlWQO3
+IE9mYM[XGlHK4H4MkNz5990
 S1
 R2
-w1732840029
+w1732863106
 R18
 R19
-!i122 54
-L0 6 361
+!i122 109
+L0 6 363
 R7
 R8
 r1
 !s85 0
 31
+R24
 R25
 R20
-R21
 !i113 0
+R21
 R22
-R23
 R3
 n@my@m@a@c
 vsram
 R16
 R17
-R24
+R23
 !i10b 1
 !s100 HZj>F?X4LWDI6ePnOV_:42
 I;^>J[_:OnD2[Q4VoXOG6;2
@@ -981,43 +1026,43 @@ R2
 w1731685853
 8../testbench/sram.sv
 F../testbench/sram.sv
-!i122 54
+!i122 109
 L0 5 105
 R7
 R8
 r1
 !s85 0
 31
+R24
 R25
 R20
-R21
 !i113 0
+R21
 R22
-R23
 R3
 vtb_top
 R16
 R17
-R24
+R23
 !i10b 1
 !s100 k?[YYblREUREd9:FfKQJC3
 IA<jeaz1YIFjA5V7lNf@f=0
 S1
 R2
-w1731692585
+w1732864106
 8../testbench/testbench.sv
 F../testbench/testbench.sv
-!i122 54
+!i122 109
 L0 21 433
 R7
 R8
 r1
 !s85 0
 31
+R24
 R25
 R20
-R21
 !i113 0
+R21
 R22
-R23
 R3

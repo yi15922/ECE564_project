@@ -29,6 +29,7 @@ module MyMAC(
 //---------------------------------------------------------------------------
 //Read/write start address signals
   input wire [`SRAM_ADDR_RANGE] sram_weight_read_base_address, 
+  input wire [`SRAM_ADDR_RANGE] sram_input_read_base_address,
   input wire [`SRAM_ADDR_RANGE] sram_result_write_start_address,
 
 //---------------------------------------------------------------------------
@@ -44,14 +45,14 @@ module MyMAC(
   output wire [`SRAM_ADDR_RANGE     ]   dut__tb__sram_weight_write_address ,
   output wire [`SRAM_DATA_RANGE     ]   dut__tb__sram_weight_write_data    ,
   output wire [`SRAM_ADDR_RANGE     ]   dut__tb__sram_weight_read_address  , 
-  input  wire [`SRAM_DATA_RANGE     ]   tb__dut__sram_weight_read_data     ,     
+  input  wire [`SRAM_DATA_RANGE     ]   tb__dut__sram_weight_read_data     , 
 
 //result SRAM interface
   output wire                           dut__tb__sram_result_write_enable  ,
   output wire [`SRAM_ADDR_RANGE     ]   dut__tb__sram_result_write_address ,
   output wire [`SRAM_DATA_RANGE     ]   dut__tb__sram_result_write_data    ,
   output wire [`SRAM_ADDR_RANGE     ]   dut__tb__sram_result_read_address  , 
-  input  wire [`SRAM_DATA_RANGE     ]   tb__dut__sram_result_read_data          
+  input  wire [`SRAM_DATA_RANGE     ]   tb__dut__sram_result_read_data         
 
 );
 
@@ -62,7 +63,7 @@ assign dut__tb__sram_weight_read_address = sram_weight_read_address;
 assign dut__tb__sram_input_read_address = sram_input_read_address;
 assign dut__tb__sram_result_write_address = sram_result_write_address; 
 
-reg [`SRAM_DATA_RANGE] sram_input_read_data, sram_weight_read_data, sram_result_write_data; 
+reg [`SRAM_DATA_RANGE] sram_input_read_data, sram_weight_read_data, sram_result_write_data, sram_scratchpad_read_data; 
 always @(posedge clk) begin
   sram_input_read_data <= tb__dut__sram_input_read_data; 
   sram_weight_read_data <= tb__dut__sram_weight_read_data; 
@@ -198,7 +199,7 @@ always @(*) begin
     // Stay in this state until a result is ready to populate
     ACCUM_LOOP: begin
       if (loop_count == input_num_cols) begin // Reached the end of an input row
-        if (sram_input_read_address == input_num_cols * input_num_rows && 
+        if (sram_input_read_address - (sram_input_read_base_address - 1) == input_num_cols * input_num_rows && 
             // Subtract base address to correctly detect reaching end of matrix
             sram_weight_read_address - (sram_weight_read_base_address - 1) == weight_max_addr) begin
               calculation_done = 1; 
@@ -287,7 +288,8 @@ always @(posedge clk) begin
   // Since this signal appears in RESET state, use it as an address reset
   if (read_matrix_dimensions) begin 
     sram_input_read_address <= 0; 
-    input_read_start_address <= 1; // Store the start address, this only changes on weights wrap-around
+    // input_read_start_address <= 1; // Store the start address, this only changes on weights wrap-around
+    input_read_start_address <= sram_input_read_base_address; 
   end
   else if (start_accum) begin
     sram_input_read_address <= input_read_start_address; 
