@@ -30,23 +30,22 @@ Loading sverilog files: '/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/dut.sv' '/
 Running PRESTO HDLC
 Compiling source file /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/dut.sv
 Opening include file /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/common.vh
-Warning:  /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/dut.sv:73: The construct 'declaration initial assignment' is not supported in synthesis; it is ignored. (VER-708)
-Warning:  /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/dut.sv:93: Found an unknown pragma 'state_vector'; it will be ignored. (ELAB-994)
+Warning:  /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/dut.sv:108: Found an unknown pragma 'state_vector'; it will be ignored. (ELAB-994)
 Compiling source file /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv
 Opening include file /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/common.vh
-Warning:  /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv:137: Found an unknown pragma 'state_vector'; it will be ignored. (ELAB-994)
+Warning:  /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv:145: Found an unknown pragma 'state_vector'; it will be ignored. (ELAB-994)
 
-Statistics for case statements in always block at line 102 in file
+Statistics for case statements in always block at line 117 in file
 	'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/dut.sv'
 ===============================================
 |           Line           |  full/ parallel  |
 ===============================================
-|           110            |    auto/auto     |
+|           135            |    auto/auto     |
 ===============================================
 Warning: Could not open default SVF file /mnt/ncsudrive/y/ychen282/ECE564/project/synthesis/svf/default.svf for writing.
 
 Inferred memory devices in process
-	in routine MyDesign line 96 in file
+	in routine MyDesign line 111 in file
 		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/dut.sv'.
 ===============================================================================
 |    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
@@ -55,17 +54,17 @@ Inferred memory devices in process
 ===============================================================================
 
 Inferred memory devices in process
-	in routine MyDesign line 178 in file
+	in routine MyDesign line 277 in file
 		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/dut.sv'.
 ===============================================================================================
 |            Register Name            |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
 ===============================================================================================
-| sram_result_write_start_address_reg | Flip-flop |  16   |  Y  | N  | N  | N  | N  | N  | N  |
 |  sram_weight_read_base_address_reg  | Flip-flop |  16   |  Y  | N  | N  | N  | N  | N  | N  |
+| sram_result_write_start_address_reg | Flip-flop |  16   |  Y  | N  | N  | N  | N  | N  | N  |
 ===============================================================================================
 
 Inferred memory devices in process
-	in routine MyDesign line 194 in file
+	in routine MyDesign line 305 in file
 		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/dut.sv'.
 ========================================================================================
 |        Register Name         |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
@@ -74,19 +73,31 @@ Inferred memory devices in process
 | scratchpad_write_enable_reg  | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
 | scratchpad_write_address_reg | Flip-flop |  16   |  Y  | N  | N  | N  | N  | N  | N  |
 ========================================================================================
-Warning:  /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv:63: signed to unsigned assignment occurs. (VER-318)
-Warning:  /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv:344: unsigned to signed assignment occurs. (VER-318)
 
-Statistics for case statements in always block at line 148 in file
+Inferred memory devices in process
+	in routine MyDesign line 329 in file
+		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/dut.sv'.
+============================================================================================
+|          Register Name           |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+============================================================================================
+| scratchpad_K_read_start_addr_reg | Flip-flop |  16   |  Y  | N  | N  | N  | N  | N  | N  |
+| scratchpad_V_read_start_addr_reg | Flip-flop |  16   |  Y  | N  | N  | N  | N  | N  | N  |
+|   result_S_read_start_addr_reg   | Flip-flop |  16   |  Y  | N  | N  | N  | N  | N  | N  |
+============================================================================================
+Warning:  /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv:66: signed to unsigned assignment occurs. (VER-318)
+Warning:  /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv:372: unsigned to signed assignment occurs. (VER-318)
+Warning:  /mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv:383: signed to unsigned assignment occurs. (VER-318)
+
+Statistics for case statements in always block at line 156 in file
 	'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv'
 ===============================================
 |           Line           |  full/ parallel  |
 ===============================================
-|           161            |    user/user     |
+|           169            |    user/user     |
 ===============================================
 
 Inferred memory devices in process
-	in routine MyMAC line 66 in file
+	in routine MyMAC line 69 in file
 		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv'.
 =====================================================================================
 |       Register Name       |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
@@ -96,7 +107,7 @@ Inferred memory devices in process
 =====================================================================================
 
 Inferred memory devices in process
-	in routine MyMAC line 116 in file
+	in routine MyMAC line 123 in file
 		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv'.
 ===============================================================================
 |    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
@@ -105,7 +116,7 @@ Inferred memory devices in process
 ===============================================================================
 
 Inferred memory devices in process
-	in routine MyMAC line 142 in file
+	in routine MyMAC line 150 in file
 		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv'.
 ===============================================================================
 |    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
@@ -114,7 +125,7 @@ Inferred memory devices in process
 ===============================================================================
 
 Inferred memory devices in process
-	in routine MyMAC line 254 in file
+	in routine MyMAC line 276 in file
 		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv'.
 =========================================================================================
 |         Register Name         |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
@@ -125,7 +136,7 @@ Inferred memory devices in process
 =========================================================================================
 
 Inferred memory devices in process
-	in routine MyMAC line 286 in file
+	in routine MyMAC line 308 in file
 		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv'.
 ========================================================================================
 |        Register Name         |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
@@ -136,7 +147,7 @@ Inferred memory devices in process
 ========================================================================================
 
 Inferred memory devices in process
-	in routine MyMAC line 328 in file
+	in routine MyMAC line 356 in file
 		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv'.
 ===============================================================================
 |    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
@@ -149,7 +160,7 @@ Inferred memory devices in process
 ===============================================================================
 
 Inferred memory devices in process
-	in routine MyMAC line 341 in file
+	in routine MyMAC line 369 in file
 		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv'.
 =========================================================================================
 |         Register Name         |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
@@ -158,7 +169,17 @@ Inferred memory devices in process
 =========================================================================================
 
 Inferred memory devices in process
-	in routine MyMAC line 354 in file
+	in routine MyMAC line 381 in file
+		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    curr_row_reg     | Flip-flop |  16   |  Y  | N  | N  | N  | N  | N  | N  |
+|    curr_col_reg     | Flip-flop |  16   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine MyMAC line 397 in file
 		'/mnt/ncsudrive/y/ychen282/ECE564/project/rtl/MAC.sv'.
 ======================================================================================
 |       Register Name        |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |

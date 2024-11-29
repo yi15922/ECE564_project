@@ -1,6 +1,6 @@
 export RTL_FILES=$(wildcard ../rtl/*.v) 
 export RTL_SV_FILES=$(wildcard ../rtl/*.sv) 
-export CLOCK_PER := 10
+export CLOCK_PER := 16.1
 
 
 all: logs reports gl sdf 

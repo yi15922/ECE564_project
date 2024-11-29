@@ -71,8 +71,8 @@ assign dut_ready = dut_ready_reg;
 reg MAC_valid, override_dimensions, override_input_weight_read_base_addresses; 
 wire MAC_ready;
 wire [`SRAM_DATA_RANGE] input_num_rows, input_num_cols, weight_num_rows, weight_num_cols; 
-reg [`SRAM_ADDR_RANGE] sram_weight_read_base_address, sram_input_read_base_address, sram_result_write_start_address, new_input_read_base_address, new_weight_read_base_address = 0; 
-reg [`SRAM_ADDR_RANGE] scratchpad_V_read_start_addr, scratchpad_K_read_start_addr, result_S_read_start_addr = 0;
+reg [`SRAM_ADDR_RANGE] sram_weight_read_base_address, sram_input_read_base_address, sram_result_write_start_address; 
+reg [`SRAM_ADDR_RANGE] scratchpad_V_read_start_addr, scratchpad_K_read_start_addr, result_S_read_start_addr;
 reg [`SRAM_DATA_RANGE] override_input_num_rows_cols, override_weight_num_rows_cols; 
 wire [`SRAM_DATA_RANGE] MAC_curr_row, MAC_curr_col; 
 
@@ -85,7 +85,9 @@ reg reset_read_write_start_addr,
     write_to_scratchpad, 
     MAC_input_A_from_result_SRAM, 
     MAC_input_B_from_scratchpad_SRAM, 
-    transpose_scratchpad_write_address; 
+    transpose_scratchpad_write_address, 
+    set_scratchpad_K_read_start_address, 
+    set_scratchpad_V_read_start_address; 
 
 
 //--------------------- Setting up the FSM ------------------------------
@@ -124,13 +126,16 @@ always @(*) begin
   write_to_scratchpad = 0; 
   MAC_input_A_from_result_SRAM = 0; 
   MAC_input_B_from_scratchpad_SRAM = 0; 
-  override_input_weight_read_base_addresses = 0; 
+  set_scratchpad_K_read_start_address = 0; 
+  set_scratchpad_V_read_start_address = 0;
   transpose_scratchpad_write_address = 0; 
+  override_weight_num_rows_cols = 0;
+  override_input_num_rows_cols = 0; 
 
   case (current_state)
     RESET: begin
       dut_ready_reg = 1; 
-      reset_read_write_start_addr = 1; 
+      sram_input_read_base_address = 1; 
       if (dut_valid) begin 
         next_state = START_Q_CALC; 
       end
@@ -140,9 +145,11 @@ always @(*) begin
     START_Q_CALC: begin
       MAC_valid = 1; 
       next_state = WAIT_FOR_Q_CALC; 
+      sram_input_read_base_address = 1;
     end
 
     WAIT_FOR_Q_CALC: begin
+      sram_input_read_base_address = 1;
       if (!MAC_ready) begin // Loop until MAC is done
         next_state = WAIT_FOR_Q_CALC; 
       end
@@ -153,6 +160,7 @@ always @(*) begin
     end
 
     START_K_CALC: begin // Wait for MAC to be ready again, then restart MAC with new address
+      sram_input_read_base_address = 1;
       if (!MAC_ready) next_state = START_K_CALC; 
       else begin 
         MAC_valid = 1; 
@@ -161,6 +169,7 @@ always @(*) begin
     end
 
     WAIT_FOR_K_CALC: begin
+      sram_input_read_base_address = 1;
       save_scratchpad_K_read_start_addr = 1; 
       write_to_scratchpad = 1; 
       if (!MAC_ready) begin
@@ -173,6 +182,7 @@ always @(*) begin
     end
 
     START_V_CALC: begin
+      sram_input_read_base_address = 1;
       if (!MAC_ready) next_state = START_V_CALC; 
       else begin 
         MAC_valid = 1; 
@@ -181,6 +191,7 @@ always @(*) begin
     end
 
     WAIT_FOR_V_CALC: begin 
+      sram_input_read_base_address = 1;
       save_scratchpad_V_read_start_addr = 1; 
       write_to_scratchpad = 1; 
       transpose_scratchpad_write_address = 1;
@@ -194,12 +205,12 @@ always @(*) begin
     end
 
     START_S_CALC: begin
+      sram_input_read_base_address = 1;
+      set_scratchpad_K_read_start_address = 1; 
       if (!MAC_ready) next_state = START_S_CALC;
       else begin 
         MAC_valid = 1; 
         sram_input_read_base_address = 0; 
-        sram_weight_read_base_address = scratchpad_K_read_start_addr; 
-        override_input_weight_read_base_addresses = 1; 
         override_input_num_rows_cols = {input_num_rows[15:0], weight_num_cols[15:0]};
         override_weight_num_rows_cols = {weight_num_cols[15:0], input_num_rows[15:0]}; 
         override_dimensions = 1; 
@@ -208,9 +219,12 @@ always @(*) begin
     end
 
     WAIT_FOR_S_CALC: begin
+      sram_input_read_base_address = 0; 
       MAC_input_A_from_result_SRAM = 1; 
       MAC_input_B_from_scratchpad_SRAM = 1; 
       save_result_S_read_start_addr = 1; 
+      override_input_num_rows_cols = {input_num_rows[15:0], weight_num_cols[15:0]};
+      override_weight_num_rows_cols = {weight_num_cols[15:0], input_num_rows[15:0]}; 
       override_dimensions = 1; 
       if (!MAC_ready) begin
         next_state = WAIT_FOR_S_CALC;
@@ -222,12 +236,12 @@ always @(*) begin
     end
 
     START_Z_CALC: begin
+      sram_input_read_base_address = 0; 
+      set_scratchpad_V_read_start_address = 1; 
       if (!MAC_ready) next_state = START_Z_CALC; 
       else begin
         MAC_valid = 1; 
         sram_input_read_base_address = result_S_read_start_addr; 
-        sram_weight_read_base_address = scratchpad_V_read_start_addr; 
-        override_input_weight_read_base_addresses = 1; 
         override_input_num_rows_cols = {input_num_rows[15:0], weight_num_cols[15:0]}; 
         override_weight_num_rows_cols = {input_num_rows[15:0], input_num_cols[15:0]}; 
         override_dimensions = 1; 
@@ -236,8 +250,11 @@ always @(*) begin
     end
 
     WAIT_FOR_Z_CALC: begin
+      sram_input_read_base_address = result_S_read_start_addr;
       MAC_input_A_from_result_SRAM = 1; 
       MAC_input_B_from_scratchpad_SRAM = 1; 
+      override_input_num_rows_cols = {input_num_rows[15:0], weight_num_cols[15:0]}; 
+      override_weight_num_rows_cols = {input_num_rows[15:0], input_num_cols[15:0]};
       override_dimensions = 1; 
       if (!MAC_ready) begin
         next_state = WAIT_FOR_Z_CALC; 
@@ -248,26 +265,32 @@ always @(*) begin
       end
     end
 
-    default: next_state = RESET;
+    default: begin
+      sram_input_read_base_address = 1;
+      next_state = RESET;
+    end
   endcase
 
 end
 
 // ----------------------- Read/Write start address calculation -----------
 always @(posedge clk) begin
-  // Reset the read/write start addresses to initial values
-  if (reset_read_write_start_addr) begin 
-    sram_weight_read_base_address <= 1; 
-    sram_input_read_base_address <= 1; 
-    sram_result_write_start_address <= 0;
-  end
-
-  // if (override_input_weight_read_base_addresses) begin
-  //   sram_input_read_base_address <= new_input_read_base_address; 
-  //   sram_weight_read_base_address <= new_weight_read_base_address;
-  // end
 
   // Save the current read/write start address + 1 to use as new base
+  
+  if (current_state == RESET) begin
+    sram_result_write_start_address <= 0;
+    sram_weight_read_base_address <= 1; 
+  end
+
+  if (set_scratchpad_K_read_start_address) begin
+    sram_weight_read_base_address <= scratchpad_K_read_start_addr; 
+  end
+
+  if (set_scratchpad_V_read_start_address) begin
+    sram_weight_read_base_address <= scratchpad_V_read_start_addr; 
+  end
+
   if (save_current_read_write_addr) begin
     sram_weight_read_base_address <= dut__tb__sram_weight_read_address + 1; 
     sram_result_write_start_address <= dut__tb__sram_result_write_address + 1; 

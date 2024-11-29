@@ -1,11 +1,11 @@
 Information: Updating design information... (UID-85)
 Information: Timing loop detected. (OPT-150)
-	U689/B1 U689/ZN U765/A U765/ZN 
-Warning: Disabling timing arc between pins 'B1' and 'ZN' on cell 'U689'
+	U1158/A U1158/ZN U2551/A2 U2551/ZN 
+Information: Timing loop detected. (OPT-150)
+	U204/B1 U204/ZN U1226/A1 U1226/ZN U1517/A1 U1517/ZN U1541/A1 U1541/ZN U1394/A U1394/ZN U2267/B U2267/CO U1214/A1 U1214/ZN U2248/B U2248/ZN U2361/A1 U2361/ZN U1568/A1 U1568/ZN U2423/B1 U2423/ZN U2551/B1 U2551/ZN 
+Warning: Disabling timing arc between pins 'A' and 'ZN' on cell 'U1158'
          to break a timing loop. (OPT-314)
-Warning: Disabling timing arc between pins 'B1' and 'ZN' on cell 'U689'
-         to break a timing loop. (OPT-314)
-Warning: Disabling timing arc between pins 'B1' and 'ZN' on cell 'U689'
+Warning: Disabling timing arc between pins 'B1' and 'ZN' on cell 'U204'
          to break a timing loop. (OPT-314)
  
 ****************************************
@@ -15,7 +15,7 @@ Report : timing
         -max_paths 1
 Design : MyDesign
 Version: T-2022.03-SP4
-Date   : Thu Nov 28 20:43:13 2024
+Date   : Fri Nov 29 18:25:13 2024
 ****************************************
 
 Operating Conditions: fast   Library: NangateOpenCellLibrary_PDKv1_2_v2008_10_fast_nldm
@@ -33,10 +33,10 @@ Wire Load Model Mode: top
   clock clk (rise edge)                  0.0000     0.0000
   clock network delay (ideal)            0.0000     0.0000
   MAC/loop_count_reg[14]/CK (DFF_X1)     0.0000     0.0000 r
-  MAC/loop_count_reg[14]/Q (DFF_X1)      0.0637     0.0637 r
-  U3039/ZN (OAI21_X1)                    0.0202     0.0839 f
-  MAC/loop_count_reg[14]/D (DFF_X1)      0.0000     0.0839 f
-  data arrival time                                 0.0839
+  MAC/loop_count_reg[14]/Q (DFF_X1)      0.0665     0.0665 r
+  U4210/ZN (OAI21_X1)                    0.0209     0.0874 f
+  MAC/loop_count_reg[14]/D (DFF_X1)      0.0000     0.0874 f
+  data arrival time                                 0.0874
 
   clock clk (rise edge)                  0.0000     0.0000
   clock network delay (ideal)            0.0000     0.0000
@@ -46,9 +46,9 @@ Wire Load Model Mode: top
   data required time                                0.0506
   -----------------------------------------------------------
   data required time                                0.0506
-  data arrival time                                -0.0839
+  data arrival time                                -0.0874
   -----------------------------------------------------------
-  slack (MET)                                       0.0333
+  slack (MET)                                       0.0368
 
 
 1
