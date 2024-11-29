@@ -120,6 +120,7 @@ always @(posedge clk) begin
 end
 
 
+
 //--------------------- Setting up the FSM ------------------------------
 parameter [3:0] // synopsys enum states
   RESET = 4'd0,
@@ -183,11 +184,11 @@ always @(*) begin
 
     // The next 3 states fills the pipeline with read data
     BEGIN_ACCUM: begin
-      start_accum = 1;
       next_state = WAIT_FOR_DATA1; 
     end
 
     WAIT_FOR_DATA1: begin
+      start_accum = 1;
       next_state = WAIT_FOR_DATA2;
     end
 
@@ -198,6 +199,7 @@ always @(*) begin
 
     // Stay in this state until a result is ready to populate
     ACCUM_LOOP: begin
+      if (loop_count == 2) zero_accum_result = 1; 
       if (loop_count == input_num_cols) begin // Reached the end of an input row
         if (sram_input_read_address - (sram_input_read_base_address - 1) == input_num_cols * input_num_rows && 
             // Subtract base address to correctly detect reaching end of matrix
