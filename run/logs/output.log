@@ -3,10 +3,11 @@ Reading pref.tcl
 # 2024.2
 
 # vsim -c -voptargs="+acc" tb_top "+TIMEOUT=1000000" "+num_of_testcases=4" "+test_mode=1" "+epsilon_mult=1.0" "+input_dir=../inputs" "+info_level=0" -do "run -all" 
-# Start time: 18:19:57 on Nov 29,2024
+# Start time: 22:14:26 on Nov 29,2024
 # ** Note: (vsim-3813) Design is being optimized due to module recompilation...
 # ** Warning: (vopt-10587) Some optimizations are turned off because the +acc switch is in effect. This will cause your simulation to run slowly. Please use -access/-debug to maintain needed visibility. The +acc switch would be deprecated in a future release.
 # ** Note: (vopt-143) Recognized 1 FSM in module "MyDesign(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "MyMAC(fast)".
 # ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=1.
 # //  Questa Sim
 # //  Version 2024.2 linux May 20 2024
@@ -298,5 +299,5 @@ Reading pref.tcl
 # 
 # ** Note: $finish    : ../testbench/testbench.sv(451)
 #    Time: 21510 ns  Iteration: 1  Instance: /tb_top
-# End time: 18:20:00 on Nov 29,2024, Elapsed time: 0:00:03
+# End time: 22:14:29 on Nov 29,2024, Elapsed time: 0:00:03
 # Errors: 0, Warnings: 1
