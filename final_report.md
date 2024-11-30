@@ -6,19 +6,25 @@ The device described in `dut.sv` can be used as part of a transformer model used
 This module builds on an existing matrix multiplier module designed, which is now called `MyMAC`. `MyMAC` has been substantially modified to accomodate the specific requirements of this particular application. The design makes efficient use of a single scratchpad SRAM to store intermediate values and minimizes idle time during the calculation process. The lowest achievable clock period is 16.1ns. 
 
 ## 1. Introduction
-- Basically repeat what the description said
-- Repeat what the abstract said
-- MAC: 
-  - Pipelined design
-  - Interlocking address calculation
-  - Robust to edge case matrices
-- DUT: 
-  - Parallism to minimize idle time
-  - Instant matrix transpose
+The rise of ChatGPT and other NLPs have increased the demand for high throughput, on device compute capabilities to protect customer provacy and enable offline usage. As a result, it becomes necessary for high throughput matrix computation to be done in parallel in hardware. 
+
+The module presented in this document performs the scaled dot-product attention operation, which is the part of an NLP core responsible for self attention. 
+
+The presented module has the following features: 
+### Standalone Matrix Multiplication Module
+  - Pipelined read to minimize clock cycles used
+  - Fault tolerant interlocking read address calculation
+  - Robust design to handle edge cases such as 1x1 input matrices
+
+### Self Attention Module
+  - Parallel reads and writes to maximize throughput
+  - Instant matrix transpose capabilities to avoid downtime
 
 ## 2. Micro-Architecture
-- Overall block diagram
-- Overall FSM flow
+![overall](overall.png)
+The above diagram describes the overall architecture of the system. The MAC module is the core of the self attention module performing matrix multiplications 
+
+- Overall FSM flow 
 
 ## 3. Interface Specification
 - List of signals and functions
